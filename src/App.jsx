@@ -8,7 +8,14 @@ import {
   Sparkles,
   Loader2,
   MessageSquare,
-  Terminal
+  Terminal,
+  ShieldCheck,
+  Globe,
+  Briefcase,
+  Cpu,
+  Palette,
+  Layout,
+  BarChart3
 } from 'lucide-react';
 
 /**
@@ -105,6 +112,14 @@ const App = () => {
     { label: 'Client Retention', value: '97%' },
     { label: 'Global Availability', value: '24/7' },
     { label: 'Time to Hire', value: '< 48h' },
+  ];
+
+  const skillsets = [
+    { role: "Developers", icon: <Cpu size={20} /> },
+    { role: "Designers", icon: <Palette size={20} /> },
+    { role: "Project Managers", icon: <Briefcase size={20} /> },
+    { role: "Product Managers", icon: <Layout size={20} /> },
+    { role: "Marketing Experts", icon: <BarChart3 size={20} /> },
   ];
 
   const JDILogo = () => (
@@ -207,8 +222,23 @@ const App = () => {
         </div>
       </section>
 
+      {/* Top Skillsets Marquee */}
+      <section className="py-20 bg-black overflow-hidden relative border-y border-white/5">
+        <div className="flex whitespace-nowrap animate-marquee">
+          {[...skillsets, ...skillsets].map((skill, idx) => (
+            <div key={idx} className="flex items-center gap-4 mx-12">
+              <span className="text-blue-500 opacity-50">{skill.icon}</span>
+              <span className="text-3xl font-black uppercase italic tracking-tighter text-white/80">
+                {skill.role}
+              </span>
+              <span className="w-2 h-2 rounded-full bg-blue-600 mx-4" />
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* AI Project Architect Section */}
-      <section className="relative py-24 px-6 z-10 border-y border-white/5 bg-[#050507]">
+      <section className="relative py-24 px-6 z-10 border-b border-white/5 bg-[#050507]">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-8">
             <Sparkles className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} />
@@ -294,18 +324,57 @@ const App = () => {
               ))}
             </div>
           </div>
+          
           <div className="grid grid-cols-2 gap-6">
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/20 transition-all">
-              <Users size={32} className="text-blue-500 mb-6" />
+            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/20 transition-all group">
+              <Users size={32} className="text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
               <h4 className="font-black uppercase italic mb-2">Build Teams</h4>
-              <p className="text-xs text-slate-500 font-medium">Scale your engineering output with pre-vetted senior talent.</p>
+              <p className="text-xs text-slate-500 font-medium leading-relaxed">Scale your engineering output with pre-vetted senior talent.</p>
             </div>
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/20 transition-all">
-              <Terminal size={32} className="text-blue-500 mb-6" />
+            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/20 transition-all group">
+              <Terminal size={32} className="text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
               <h4 className="font-black uppercase italic mb-2">Tech Depth</h4>
-              <p className="text-xs text-slate-500 font-medium">Domain experts in AI, Fintech, and Modern Web Systems.</p>
+              <p className="text-xs text-slate-500 font-medium leading-relaxed">Domain experts in AI, Fintech, and Modern Web Systems.</p>
+            </div>
+            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/20 transition-all group">
+              <ShieldCheck size={32} className="text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
+              <h4 className="font-black uppercase italic mb-2">Zero Risk</h4>
+              <p className="text-xs text-slate-500 font-medium leading-relaxed">Trial periods ensure the perfect match every single time.</p>
+            </div>
+            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/20 transition-all group">
+              <Globe size={32} className="text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
+              <h4 className="font-black uppercase italic mb-2">Global Reach</h4>
+              <p className="text-xs text-slate-500 font-medium leading-relaxed">Talent across every timezone, ready to integrate now.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Join the Elite Section */}
+      <section className="py-32 px-6 bg-gradient-to-b from-[#020203] to-[#0a0a0c] border-t border-white/5 overflow-hidden relative">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-[#1bd2a4]/30 text-[#1bd2a4] text-[10px] font-bold tracking-[0.3em] uppercase bg-[#1bd2a4]/5 mb-8">
+            Network Expansion
+          </div>
+          <h2 className="text-5xl md:text-7xl font-black uppercase italic mb-8 leading-[0.9] tracking-tighter">
+            Are you part of the <span className="text-[#1bd2a4]">Top 3%?</span>
+          </h2>
+          <p className="text-slate-400 text-lg mb-12 max-w-2xl mx-auto leading-relaxed">
+            Join our elite network and work with world-class companies on meaningful, high-impact projects. We only accept the best.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <button className="w-full sm:w-auto flex items-center justify-center gap-4 bg-[#1bd2a4] hover:bg-[#18b88f] text-black font-black px-10 py-5 rounded-sm transition-all italic group">
+              APPLY AS FREELANCER <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <a href="#" className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 hover:text-white transition-colors">
+              VIEW OPEN SQUADS
+            </a>
+          </div>
+        </div>
+        
+        {/* Decorative background element */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-10 pointer-events-none">
+          <div className="w-full h-full bg-[#1bd2a4] blur-[160px] rounded-full scale-75" />
         </div>
       </section>
 
@@ -329,8 +398,18 @@ const App = () => {
       <style dangerouslySetInnerHTML={{ __html: `
         .stroke-blue { -webkit-text-stroke: 1.5px #3b82f6; }
         .stroke-green { -webkit-text-stroke: 1.5px #1bd2a4; }
+        
         @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .animate-spin-slow { animation: spin-slow 15s linear infinite; }
+        
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+        
         input::placeholder { color: #334155; }
       `}} />
     </div>
