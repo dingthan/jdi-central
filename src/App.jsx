@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowRight, 
   CheckCircle2,
@@ -15,16 +15,20 @@ import {
   Cpu,
   Palette,
   Layout,
-  BarChart3
+  BarChart3,
+  Award,
+  FileText,
+  Search
 } from 'lucide-react';
 
 /**
  * JDI Central - Reimagined
  * A premium landing page for elite technical talent and solutions.
  * Features: 
- * - Split Hero Interaction
- * - Gemini AI Project Architect
- * - Responsive Modern UI
+ * - Split Hero Interaction with AI Context Switching
+ * - Gemini AI Dynamic Architect (Job Descriptions vs Project Blueprints)
+ * - High-Speed Interactive Marquee with Swipe & Pause
+ * - Freelancer Network CTA
  */
 
 // API Configuration
@@ -35,6 +39,12 @@ const App = () => {
   const [scrollY, setScrollY] = useState(0);
   const [activeSide, setActiveSide] = useState('client'); 
   
+  // Marquee Swipe State
+  const marqueeRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
   // AI Feature States
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState(null);
@@ -46,6 +56,26 @@ const App = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  /**
+   * Swipe Handlers for Marquee
+   */
+  const handleTouchStart = (e) => {
+    setIsPaused(true);
+    setStartX(e.touches[0].pageX - (marqueeRef.current?.offsetLeft || 0));
+    setScrollLeft(marqueeRef.current?.scrollLeft || 0);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isPaused || !marqueeRef.current) return;
+    const x = e.touches[0].pageX - (marqueeRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 2; 
+    marqueeRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchEnd = () => {
+    setTimeout(() => setIsPaused(false), 800);
+  };
 
   /**
    * Gemini API call with exponential backoff logic
@@ -67,13 +97,12 @@ const App = () => {
         });
 
         if (!response.ok) {
-          // Handle rate limiting (429)
           if (response.status === 429 && retries < 5) {
             const delay = Math.pow(2, retries) * 1000;
             await new Promise(resolve => setTimeout(resolve, delay));
             return fetchWithRetry(retries + 1);
           }
-          throw new Error('Failed to connect to AI Architect');
+          throw new Error('Failed to connect to AI Engine');
         }
 
         const data = await response.json();
@@ -92,7 +121,7 @@ const App = () => {
       const result = await fetchWithRetry();
       setAiResult(result);
     } catch (err) {
-      setError("The AI Architect is at capacity. Please try again in a moment.");
+      setError("The AI Engine is at capacity. Please try again in a moment.");
     } finally {
       setAiLoading(false);
     }
@@ -101,8 +130,16 @@ const App = () => {
   const handleAiConsult = () => {
     if (!userInput.trim()) return;
     
-    const systemPrompt = "You are an elite Technical Consultant at JDI Central. Analyze the user's project idea and recommend: 1. A sophisticated tech stack for enterprise scale. 2. A 'Dream Team' squad composition (specific roles). 3. Estimated deployment time. Use professional, high-impact language and focus on Top 3% quality.";
-    const prompt = `Project Vision: ${userInput}. Architect the ideal JDI squad for this specific build.`;
+    // Dynamic Prompting based on activeSide
+    let systemPrompt, prompt;
+    
+    if (activeSide === 'client') {
+      systemPrompt = "You are an expert Technical Recruiter at JDI Central. Generate a high-impact, professional Job Description for a Top 3% candidate based on the role name provided. Include: 1. A summary that sells the vision. 2. Key responsibilities for a senior-level role. 3. Required tech stack and cultural traits.";
+      prompt = `Create an elite Job Description for: ${userInput}. Focus on attracting the world's best talent.`;
+    } else {
+      systemPrompt = "You are an elite Technical Architect at JDI Central. Analyze the user's project vision and recommend: 1. A sophisticated tech stack. 2. A 'Dream Team' squad composition. 3. Estimated deployment time.";
+      prompt = `Project Vision: ${userInput}. Architect the ideal JDI squad and tech stack for this specific build.`;
+    }
     
     callGemini(prompt, systemPrompt);
   };
@@ -144,19 +181,17 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#020203] text-white font-sans selection:bg-blue-500 selection:text-white overflow-x-hidden">
-      {/* Dynamic Grid Background Overlay */}
+      {/* Dynamic Grid Background */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.05]" 
            style={{ backgroundImage: 'linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
       
-      {/* Background Glow Effect */}
+      {/* Background Glow */}
       <div 
         className="fixed pointer-events-none transition-all duration-1000 ease-out z-0 opacity-40"
         style={{
           width: '1000px',
           height: '1000px',
-          background: activeSide === 'client' 
-            ? 'radial-gradient(circle, #2563eb 0%, transparent 70%)' 
-            : 'radial-gradient(circle, #1bd2a4 0%, transparent 70%)',
+          background: activeSide === 'client' ? 'radial-gradient(circle, #2563eb 0%, transparent 70%)' : 'radial-gradient(circle, #1bd2a4 0%, transparent 70%)',
           left: activeSide === 'client' ? '30%' : '70%',
           top: '30%',
           transform: `translate(-50%, -50%) translate(${scrollY * 0.05}px, ${scrollY * 0.02}px)`,
@@ -178,14 +213,16 @@ const App = () => {
         </button>
       </nav>
 
-      {/* Split Hero Section */}
+      {/* Hero Section */}
       <section className="relative pt-32 min-h-[90vh] flex flex-col justify-center px-6 z-10">
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-6 relative">
-          
-          {/* Card 1: Individual Talent (Precision) */}
+          {/* HIRE PRECISION CARD */}
           <div 
-            onMouseEnter={() => setActiveSide('client')}
-            className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-default ${activeSide === 'client' ? 'bg-blue-600/5 border-blue-500/40' : 'bg-transparent border-transparent opacity-40 hover:opacity-60'}`}
+            onMouseEnter={() => {
+              setActiveSide('client');
+              setAiResult(null); // Clear previous AI context when switching
+            }} 
+            className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'client' ? 'bg-blue-600/5 border-blue-500/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
           >
             <div className="mb-6 inline-flex items-center gap-2 px-4 py-1 rounded-full border border-blue-500/50 text-blue-400 text-[10px] font-bold tracking-widest uppercase bg-blue-500/10">
               <Star size={14} fill="currentColor" /> World-Class Talent
@@ -193,18 +230,19 @@ const App = () => {
             <h1 className="text-6xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6">
               Hire <br /><span className="text-transparent stroke-blue">Precision.</span>
             </h1>
-            <p className="text-lg text-slate-400 mb-8 max-w-sm font-medium">
-              Access individual elite software engineers and designers. Integrated into your team in 48 hours.
-            </p>
+            <p className="text-lg text-slate-400 mb-8 max-w-sm font-medium">Access individual elite software engineers and designers.</p>
             <button className="flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-sm font-black transition-all italic group">
               HIRE TOP TALENT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
-          {/* Card 2: Dedicated Squads (Solutions) */}
+          {/* BUILD THE FUTURE CARD */}
           <div 
-            onMouseEnter={() => setActiveSide('talent')}
-            className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-default ${activeSide === 'talent' ? 'bg-[#1bd2a4]/5 border-[#1bd2a4]/40' : 'bg-transparent border-transparent opacity-40 hover:opacity-60'}`}
+            onMouseEnter={() => {
+              setActiveSide('talent');
+              setAiResult(null); // Clear previous AI context when switching
+            }} 
+            className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'talent' ? 'bg-[#1bd2a4]/5 border-[#1bd2a4]/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
           >
             <div className="mb-6 inline-flex items-center gap-2 px-4 py-1 rounded-full border border-[#1bd2a4]/50 text-[#1bd2a4] text-[10px] font-bold tracking-widest uppercase bg-[#1bd2a4]/10">
               <Zap size={14} fill="currentColor" /> Full Solutions
@@ -212,9 +250,7 @@ const App = () => {
             <h1 className="text-6xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6">
               Build <br /><span className="text-transparent stroke-green">The Future.</span>
             </h1>
-            <p className="text-lg text-slate-400 mb-8 max-w-sm font-medium">
-              From MVP to Enterprise scale. Deploy a dedicated JDI squad to ship mission-critical products.
-            </p>
+            <p className="text-lg text-slate-400 mb-8 max-w-sm font-medium">Deploy a dedicated JDI squad to ship mission-critical products.</p>
             <button className="flex items-center gap-4 bg-[#1bd2a4] hover:bg-[#18b88f] text-black font-black px-8 py-4 rounded-sm transition-all italic group">
               START A PROJECT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -222,58 +258,71 @@ const App = () => {
         </div>
       </section>
 
-      {/* Top Skillsets Marquee */}
-      <section className="py-20 bg-black overflow-hidden relative border-y border-white/5">
-        <div className="flex whitespace-nowrap animate-marquee">
-          {[...skillsets, ...skillsets].map((skill, idx) => (
-            <div key={idx} className="flex items-center gap-4 mx-12">
-              <span className="text-blue-500 opacity-50">{skill.icon}</span>
-              <span className="text-3xl font-black uppercase italic tracking-tighter text-white/80">
-                {skill.role}
-              </span>
-              <span className="w-2 h-2 rounded-full bg-blue-600 mx-4" />
+      {/* High-Speed Swipe Marquee */}
+      <section 
+        className="py-24 bg-black overflow-hidden relative border-y border-white/5 group/marquee cursor-grab active:cursor-grabbing"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div ref={marqueeRef} className={`flex whitespace-nowrap animate-marquee-fast ${isPaused ? 'pause' : ''}`}>
+          {[...skillsets, ...skillsets, ...skillsets, ...skillsets].map((skill, idx) => (
+            <div key={idx} className="flex items-center gap-8 mx-12 transition-all duration-300 hover:scale-110 select-none">
+              <span className={`transition-colors duration-500 ${activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} opacity-40`}>{skill.icon}</span>
+              <span className="text-5xl font-black uppercase italic tracking-tighter text-white/30 hover:text-white transition-colors duration-300">{skill.role}</span>
+              <span className={`w-2 h-2 rounded-full ${activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'} opacity-20 mx-4`} />
             </div>
           ))}
         </div>
       </section>
 
-      {/* AI Project Architect Section */}
+      {/* DYNAMIC AI SECTION: Context changes based on Hero Hover */}
       <section className="relative py-24 px-6 z-10 border-b border-white/5 bg-[#050507]">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <Sparkles className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} />
-            <h2 className="text-2xl font-black uppercase italic tracking-tighter">
-              AI Project Architect
+          <div className="flex items-center justify-center gap-3 mb-8 transition-all duration-500">
+            {activeSide === 'client' ? (
+              <FileText className="text-blue-500 animate-pulse" size={28} />
+            ) : (
+              <Sparkles className="text-[#1bd2a4] animate-pulse" size={28} />
+            )}
+            <h2 className="text-2xl font-black uppercase italic tracking-tighter text-center">
+              {activeSide === 'client' ? 'AI Job Architect' : 'AI Project Architect'}
             </h2>
           </div>
-          
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-10 backdrop-blur-xl shadow-2xl">
+          <div className={`bg-white/5 border rounded-2xl p-6 md:p-10 backdrop-blur-xl shadow-2xl transition-all duration-700 ${activeSide === 'client' ? 'border-blue-500/30' : 'border-[#1bd2a4]/30'}`}>
             <p className="text-slate-400 mb-6 text-center text-sm font-medium">
-              Describe your vision (e.g., a real-time trading platform or a healthcare SaaS). ✨ Gemini will design your squad and roadmap.
+              {activeSide === 'client' 
+                ? "Draft a world-class Job Description to attract elite talent instantly. ✨"
+                : "Describe your project vision and get a professional squad blueprint. ✨"}
             </p>
-            
             <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <input 
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleAiConsult()}
-                placeholder="What are you building?"
-                className="flex-1 bg-black/50 border border-white/10 rounded-lg px-6 py-4 focus:outline-none focus:border-blue-500 transition-colors text-white placeholder:text-slate-600"
-              />
+              <div className="relative flex-1">
+                <input 
+                  value={userInput} 
+                  onChange={(e) => setUserInput(e.target.value)} 
+                  onKeyPress={(e) => e.key === 'Enter' && handleAiConsult()}
+                  placeholder={activeSide === 'client' ? "e.g., Senior Full Stack Engineer (Rust/React)" : "What are you building?"} 
+                  className="w-full bg-black/50 border border-white/10 rounded-lg pl-12 pr-6 py-4 focus:outline-none focus:border-blue-500 text-white placeholder:text-slate-600 transition-all" 
+                />
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                  {activeSide === 'client' ? <Search size={18} /> : <Terminal size={18} />}
+                </div>
+              </div>
               <button 
-                onClick={handleAiConsult}
-                disabled={aiLoading}
-                className={`flex items-center justify-center gap-3 px-8 py-4 rounded-lg font-black italic transition-all disabled:opacity-50 min-w-[200px] ${activeSide === 'client' ? 'bg-blue-600 text-white hover:bg-blue-500' : 'bg-[#1bd2a4] text-black hover:bg-[#18b88f]'}`}
+                onClick={handleAiConsult} 
+                disabled={aiLoading} 
+                className={`px-8 py-4 rounded-lg font-black italic transition-all disabled:opacity-50 min-w-[220px] shadow-lg hover:shadow-xl ${activeSide === 'client' ? 'bg-blue-600 hover:bg-blue-500' : 'bg-[#1bd2a4] text-black hover:bg-[#18b88f]'}`}
               >
-                {aiLoading ? <Loader2 className="animate-spin" /> : <Sparkles size={18} />}
-                DRAFT BLUEPRINT
+                {aiLoading ? <Loader2 className="animate-spin mx-auto" /> : (activeSide === 'client' ? "GENERATE DESCRIPTION" : "DRAFT BLUEPRINT")}
               </button>
             </div>
-
+            
             {error && <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs mb-4 text-center">{error}</div>}
-
+            
             {aiResult && (
-              <div className="p-8 rounded-lg bg-white/5 border border-white/10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <div className="p-8 rounded-lg bg-white/5 border border-white/10 animate-in fade-in slide-in-from-bottom-4 duration-700 max-h-[500px] overflow-y-auto custom-scrollbar">
                 <div className="flex items-start gap-4">
                   <MessageSquare className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} />
                   <div className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap font-medium">
@@ -304,113 +353,83 @@ const App = () => {
       <section className="py-32 px-6 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <div>
-            <h2 className="text-4xl md:text-6xl font-black uppercase italic mb-8 leading-tight">
-              The <span className="text-blue-500">Top 3%</span> <br />Screening Process.
-            </h2>
-            <p className="text-slate-400 text-lg mb-10 leading-relaxed">
-              We vet thousands of applicants. Only those with the highest scores in technical skill and communication enter our global network.
-            </p>
+            <h2 className="text-4xl md:text-6xl font-black uppercase italic mb-8 leading-tight">The <span className="text-blue-500">Top 3%</span> Screening Process.</h2>
             <div className="space-y-6">
-              {[
-                "Language & Personality Evaluation",
-                "In-Depth Technical Deep Dive",
-                "Live Technical Screening",
-                "Trial-to-Hire Guarantee"
-              ].map((item, idx) => (
+              {["Language & Personality Evaluation", "In-Depth Technical Deep Dive", "Live Technical Screening", "Trial-to-Hire Guarantee"].map((item, idx) => (
                 <div key={idx} className="flex items-center gap-4 text-white font-bold uppercase italic tracking-wider text-sm">
-                  <CheckCircle2 className="text-blue-500" size={20} />
-                  {item}
+                  <CheckCircle2 className="text-blue-500" size={20} /> {item}
                 </div>
               ))}
             </div>
           </div>
-          
           <div className="grid grid-cols-2 gap-6">
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/20 transition-all group">
-              <Users size={32} className="text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
-              <h4 className="font-black uppercase italic mb-2">Build Teams</h4>
-              <p className="text-xs text-slate-500 font-medium leading-relaxed">Scale your engineering output with pre-vetted senior talent.</p>
+            {/* Card 1: Build Teams */}
+            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/30 transition-all">
+                <Users size={32} className="text-blue-500 mb-6" />
+                <h4 className="font-black uppercase italic mb-2">Build Teams</h4>
+                <p className="text-xs text-slate-500 uppercase tracking-tighter">Scale with pre-vetted seniors.</p>
             </div>
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/20 transition-all group">
-              <Terminal size={32} className="text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
-              <h4 className="font-black uppercase italic mb-2">Tech Depth</h4>
-              <p className="text-xs text-slate-500 font-medium leading-relaxed">Domain experts in AI, Fintech, and Modern Web Systems.</p>
+            {/* Card 2: Tech Depth */}
+            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/30 transition-all">
+                <Terminal size={32} className="text-blue-500 mb-6" />
+                <h4 className="font-black uppercase italic mb-2">Tech Depth</h4>
+                <p className="text-xs text-slate-500 uppercase tracking-tighter">AI, Fintech, Web Specialists.</p>
             </div>
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/20 transition-all group">
-              <ShieldCheck size={32} className="text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
-              <h4 className="font-black uppercase italic mb-2">Zero Risk</h4>
-              <p className="text-xs text-slate-500 font-medium leading-relaxed">Trial periods ensure the perfect match every single time.</p>
+            {/* Card 3: Zero Risk (Added) */}
+            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/30 transition-all">
+                <ShieldCheck size={32} className="text-blue-500 mb-6" />
+                <h4 className="font-black uppercase italic mb-2">Zero Risk</h4>
+                <p className="text-xs text-slate-500 uppercase tracking-tighter leading-relaxed">Trial periods ensure the perfect match every single time.</p>
             </div>
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/20 transition-all group">
-              <Globe size={32} className="text-blue-500 mb-6 group-hover:scale-110 transition-transform" />
-              <h4 className="font-black uppercase italic mb-2">Global Reach</h4>
-              <p className="text-xs text-slate-500 font-medium leading-relaxed">Talent across every timezone, ready to integrate now.</p>
+            {/* Card 4: Global Reach (Added) */}
+            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/30 transition-all">
+                <Globe size={32} className="text-blue-500 mb-6" />
+                <h4 className="font-black uppercase italic mb-2">Global Reach</h4>
+                <p className="text-xs text-slate-500 uppercase tracking-tighter leading-relaxed">Talent across every timezone, ready to integrate now.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Join the Elite Section */}
-      <section className="py-32 px-6 bg-gradient-to-b from-[#020203] to-[#0a0a0c] border-t border-white/5 overflow-hidden relative">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-[#1bd2a4]/30 text-[#1bd2a4] text-[10px] font-bold tracking-[0.3em] uppercase bg-[#1bd2a4]/5 mb-8">
-            Network Expansion
+      {/* Freelancer Network CTA Section */}
+      <section className="relative py-32 px-6 overflow-hidden">
+        <div className={`absolute inset-0 opacity-10 transition-colors duration-700 ${activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'}`} style={{ clipPath: 'polygon(0 15%, 100% 0, 100% 85%, 0 100%)' }}></div>
+        <div className="max-w-5xl mx-auto relative z-10 text-center">
+          <div className="inline-flex items-center justify-center p-4 rounded-full bg-white/5 border border-white/10 mb-8">
+            <Award className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} size={40} />
           </div>
-          <h2 className="text-5xl md:text-7xl font-black uppercase italic mb-8 leading-[0.9] tracking-tighter">
-            Are you part of the <span className="text-[#1bd2a4]">Top 3%?</span>
+          <h2 className="text-5xl md:text-7xl font-black uppercase italic mb-6 tracking-tighter leading-none">
+            Are you part of the <span className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}>Top 3%?</span>
           </h2>
-          <p className="text-slate-400 text-lg mb-12 max-w-2xl mx-auto leading-relaxed">
-            Join our elite network and work with world-class companies on meaningful, high-impact projects. We only accept the best.
+          <p className="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+            Join our elite network and work with world-class companies on meaningful, high-impact projects.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button className="w-full sm:w-auto flex items-center justify-center gap-4 bg-[#1bd2a4] hover:bg-[#18b88f] text-black font-black px-10 py-5 rounded-sm transition-all italic group">
-              APPLY AS FREELANCER <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-            <a href="#" className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 hover:text-white transition-colors">
-              VIEW OPEN SQUADS
-            </a>
-          </div>
-        </div>
-        
-        {/* Decorative background element */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-10 pointer-events-none">
-          <div className="w-full h-full bg-[#1bd2a4] blur-[160px] rounded-full scale-75" />
+          <button className={`group flex items-center gap-6 mx-auto px-12 py-6 rounded-sm font-black text-lg uppercase italic transition-all transform hover:scale-105 ${activeSide === 'client' ? 'bg-blue-600 text-white' : 'bg-[#1bd2a4] text-black'}`}>
+            APPLY AS FREELANCER
+            <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
+          </button>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="py-20 border-t border-white/5 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
           <JDILogo />
-          <div className="flex gap-10 text-[10px] font-black uppercase tracking-widest text-slate-500">
-            <a href="#" className="hover:text-white transition-colors">Hire Talent</a>
-            <a href="#" className="hover:text-white transition-colors">Services</a>
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Contact Us</a>
-          </div>
-          <div className="text-[10px] text-slate-600 uppercase font-bold tracking-tighter">
-            © 2025 JDI CENTRAL. ALL RIGHTS RESERVED.
-          </div>
+          <div className="text-[10px] text-slate-600 uppercase font-bold tracking-tighter">© 2025 JDI CENTRAL. ALL RIGHTS RESERVED.</div>
         </div>
       </footer>
 
-      {/* Global Utility Styles */}
       <style dangerouslySetInnerHTML={{ __html: `
         .stroke-blue { -webkit-text-stroke: 1.5px #3b82f6; }
         .stroke-green { -webkit-text-stroke: 1.5px #1bd2a4; }
-        
         @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .animate-spin-slow { animation: spin-slow 15s linear infinite; }
-        
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 30s linear infinite;
-        }
-        
-        input::placeholder { color: #334155; }
+        @keyframes marquee-fast { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-marquee-fast { animation: marquee-fast 6s linear infinite; }
+        .pause { animation-play-state: paused !important; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
       `}} />
     </div>
   );
