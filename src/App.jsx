@@ -127,7 +127,7 @@ const App = () => {
 
   const statsList = [
     { label: 'Verified Talents', value: '1,500+' },
-    { label: 'Client Retention', value: '97%' },
+    { label: 'Client Retention', value: '95%' },
     { label: 'Global Availability', value: '24/7' },
     { label: 'Time to Hire', value: '< 48h' },
   ];
@@ -168,7 +168,7 @@ const App = () => {
       name: "Linda Chen",
       title: "VP of Product",
       company: "Velocity Fintech",
-      quote: "JDI doesn't just provide 'hands'. They provided a squad that fundamentally improved our mobile architecture. True partners in every sense.",
+      quote: "JDI Central doesn't just provide 'hands'. They provided a squad that fundamentally improved our mobile architecture. True partners in every sense.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Linda",
       size: "small"
     },
@@ -176,7 +176,7 @@ const App = () => {
       name: "Jameson Blake",
       title: "Founder",
       company: "EcoSphere",
-      quote: "Working with their UI/UX leads changed how we think about our user journey. High-caliber design talent is hard to find; JDI has it in abundance.",
+      quote: "Working with their UI/UX expert changed how we think about our user journey. High-caliber design talent is hard to find; JDI Central has it in abundance.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jameson",
       size: "small"
     },
@@ -184,7 +184,7 @@ const App = () => {
       name: "Sofia Rodriguez",
       title: "Head of Engineering",
       company: "Quantum Guard",
-      quote: "Screening technical talent is usually a full-time job for me. With JDI, I trust their 3% screening process implicitly. They haven't missed once.",
+      quote: "Screening technical talent is usually a full-time job for me. With JDI Central, I trust their screening process implicitly. They haven't missed once.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia",
       size: "large"
     }
@@ -311,7 +311,7 @@ const App = () => {
             <h1 className={`text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Hire <br /><span className={`text-transparent ${isDark ? 'stroke-green-dark' : 'stroke-green-light'}`}>Precision.</span>
             </h1>
-            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Access individual elite software engineers and designers.</p>
+            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Access remote elite software engineers, designers and more.</p>
             <button className={`flex items-center gap-4 bg-[#1bd2a4] hover:bg-[#18b88f] text-black px-8 py-4 rounded-sm font-black transition-all italic group shadow-lg`}>
               HIRE TOP TALENT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -328,7 +328,7 @@ const App = () => {
             <h1 className={`text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Build <br /><span className={`text-transparent ${isDark ? 'stroke-blue-dark' : 'stroke-blue-light'}`}>The Future.</span>
             </h1>
-            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Deploy a dedicated JDI squad to ship mission-critical products.</p>
+            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Provide a dedicated squad to ship mission-critical products.</p>
             <button className={`flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white font-black px-8 py-4 rounded-sm transition-all italic group shadow-lg`}>
               START A PROJECT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -581,9 +581,6 @@ const App = () => {
                   <div className="mb-8">
                     <div className="flex items-center justify-between mb-6">
                       <img src={t.photo} alt={t.name} className={`w-20 h-20 rounded-[2rem] bg-slate-800 border-4 group-hover:rotate-3 transition-transform ${themeBorder}`} />
-                      <button className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full border transition-all ${isDark ? 'border-white/10 hover:bg-white/10' : 'border-slate-200 hover:bg-white'} ${themeText}`}>
-                        Read Story <ArrowRight size={14} />
-                      </button>
                     </div>
                     <h4 className="text-2xl font-black italic uppercase tracking-tighter leading-none">{t.name}</h4>
                     <div className="flex items-center gap-2 mt-2">
@@ -639,7 +636,7 @@ const App = () => {
                 href="#" 
                 className={`flex items-center justify-center gap-4 px-10 py-6 rounded-sm font-black text-lg uppercase italic transition-all shadow-2xl hover:scale-105 active:scale-95 ${themeBg} ${activeSide === 'client' && isDark ? 'text-black' : 'text-white'}`}
               >
-                <CalendarDays size={24} />
+                <CalendarDays size={68} />
                 BOOK A FREE CONSULTATION
                 <ArrowRight size={20} />
               </a>
