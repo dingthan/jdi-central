@@ -693,7 +693,61 @@ const App = () => {
           </div>
         </div>
       </section>
+      {/* CONSULTATION SECTION */}
+      <section className={`py-24 px-6 relative z-10 border-y ${isDark ? 'bg-black border-white/5' : 'bg-slate-50 border-slate-200'}`}>
+        <div className="max-w-5xl mx-auto">
+          <div className={`flex flex-col md:flex-row items-center justify-between gap-12 p-8 md:p-16 rounded-[3rem] border overflow-hidden relative group transition-colors duration-500 ${isDark ? 'bg-[#0a0a0c] border-white/10' : 'bg-white border-slate-200 shadow-xl shadow-slate-200/50'}`}>
+            <div className={`absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-10 transition-colors duration-700 ${themeBg}`} />
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <HelpCircle className={themeText} size={24} />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Still Deciding?</span>
+              </div>
+              <h2 className={`text-4xl md:text-6xl font-black uppercase italic mb-4 leading-[0.9] ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                Not Sure <br />Where to <span className={themeText}>Start?</span>
+              </h2>
+              <p className={`text-lg font-medium max-w-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                Speak with our strategy team to determine the best model for your unique business goals.
+              </p>
+            </div>
 
+            <div className="relative z-10 w-full md:w-auto">
+              <a 
+                href="#" 
+                className={`flex items-center justify-center gap-4 px-10 py-6 rounded-sm font-black text-lg uppercase italic transition-all shadow-2xl hover:scale-105 active:scale-95 ${themeBg} ${activeSide === 'client' && isDark ? 'text-black' : 'text-white'}`}
+              >
+                <CalendarDays size={24} />
+                BOOK A FREE CONSULTATION
+                <ArrowRight size={20} />
+              </a>
+              <p className="text-center md:text-left text-[9px] uppercase tracking-widest text-slate-600 mt-4 font-black">
+                15-Minute Strategy Session • No Obligation
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Freelancer Network CTA Section */}
+      <section className="relative py-32 px-6 overflow-hidden">
+        <div className={`absolute inset-0 opacity-10 transition-colors duration-700 ${themeBg}`} style={{ clipPath: 'polygon(0 15%, 100% 0, 100% 85%, 0 100%)' }}></div>
+        <div className="max-w-5xl mx-auto relative z-10 text-center">
+          <div className={`inline-flex items-center justify-center p-4 rounded-full border mb-8 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <Award className={themeText} size={40} />
+          </div>
+          <h2 className={`text-5xl md:text-7xl font-black uppercase italic mb-6 tracking-tighter leading-none ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            Are you part of the <span className={themeText}>Top 3%?</span>
+          </h2>
+          <p className={`text-xl md:text-2xl mb-12 max-w-2xl mx-auto font-medium leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+            Join our elite network and work with world-class companies on meaningful, high-impact projects.
+          </p>
+          <button className={`group flex items-center gap-6 mx-auto px-12 py-6 rounded-sm font-black text-lg uppercase italic transition-all transform hover:scale-105 shadow-xl ${themeBg} ${activeSide === 'client' && isDark ? 'text-black' : 'text-white'}`}>
+            APPLY AS FREELANCER
+            <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
+          </button>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className={`py-20 px-6 border-t transition-colors duration-500 ${isDark ? 'bg-black border-white/5' : 'bg-white border-slate-200'}`}>
