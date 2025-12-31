@@ -150,7 +150,7 @@ const App = () => {
       role: "Senior Full Stack", 
       skills: ["Rust", "React"], 
       xp: "10+ yrs", 
-      rate: "$110/hr", 
+      rate: "$22/hr", 
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
       stats: { power: 98, agility: 92, speed: 95 },
       winRate: "99%"
@@ -160,7 +160,7 @@ const App = () => {
       role: "Lead UI/UX", 
       skills: ["Figma", "SaaS"], 
       xp: "8 yrs", 
-      rate: "$95/hr", 
+      rate: "$15/hr", 
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
       stats: { power: 94, agility: 99, speed: 91 },
       winRate: "100%"
@@ -170,7 +170,7 @@ const App = () => {
       role: "Blockchain Dev", 
       skills: ["Solidity", "Go"], 
       xp: "6 yrs", 
-      rate: "$140/hr", 
+      rate: "$15/hr", 
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
       stats: { power: 99, agility: 88, speed: 90 },
       winRate: "97%"
@@ -180,7 +180,7 @@ const App = () => {
       role: "DevOps Engineer", 
       skills: ["K8s", "Terraform"], 
       xp: "7 yrs", 
-      rate: "$125/hr", 
+      rate: "$20/hr", 
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
       stats: { power: 96, agility: 91, speed: 98 },
       winRate: "99%"
@@ -190,7 +190,7 @@ const App = () => {
       role: "AI Specialist", 
       skills: ["PyTorch", "LLMs"], 
       xp: "5 yrs", 
-      rate: "$130/hr", 
+      rate: "$18/hr", 
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
       stats: { power: 97, agility: 94, speed: 93 },
       winRate: "100%"
@@ -217,7 +217,7 @@ const App = () => {
       name: "Linda Chen",
       title: "VP of Product",
       company: "Velocity Fintech",
-      quote: "JDI doesn't just provide 'hands'. They provided a squad that fundamentally improved our mobile architecture. True partners in every sense.",
+      quote: "JDI Central doesn't just provide 'hands'. They provided a squad that fundamentally improved our mobile architecture. True partners in every sense.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Linda",
       size: "small"
     },
@@ -225,7 +225,7 @@ const App = () => {
       name: "Jameson Blake",
       title: "Founder",
       company: "EcoSphere",
-      quote: "Working with their UI/UX leads changed how we think about our user journey. High-caliber design talent is hard to find; JDI has it in abundance.",
+      quote: "Working with their UI/UX expert changed how we think about our user journey. High-caliber design talent is hard to find; JDI Central has it in abundance.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jameson",
       size: "small"
     },
@@ -233,7 +233,7 @@ const App = () => {
       name: "Sofia Rodriguez",
       title: "Head of Engineering",
       company: "Quantum Guard",
-      quote: "Screening technical talent is usually a full-time job for me. With JDI, I trust their 3% screening process implicitly. They haven't missed once.",
+      quote: "Screening technical talent is usually a full-time job for me. With JDI Central, I trust their screening process implicitly. They haven't missed once.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia",
       size: "large"
     }
@@ -405,7 +405,7 @@ const App = () => {
                       <h4 className="text-2xl font-black italic uppercase tracking-tighter leading-none mb-1 group-hover:text-emerald-500 transition-colors">{person.name}</h4>
                       <p className="text-[10px] font-black uppercase opacity-40 italic">{person.role}</p>
                     </div>
-                    <div className={`px-2 py-1 rounded-sm text-[9px] font-black italic uppercase ${isDark ? 'bg-white/5 text-white' : 'bg-slate-100 text-slate-800'}`}>
+                    <div className={`px-2 py-1 rounded-sm text-[14px] font-black italic ${isDark ? 'bg-white/5 text-white' : 'bg-slate-100 text-slate-800'}`}>
                       {person.rate}
                     </div>
                   </div>
@@ -701,17 +701,32 @@ const App = () => {
           <div className="max-w-sm">
             <JDILogo side={activeSide} />
             <p className="text-slate-500 mt-6 mb-8 leading-relaxed font-medium">
-              The platform bridging the gap between high-stakes tech needs and world-class freelance talent.
+              The platform bridging the gap between high-stakes tech needs and world-class freelance talent. Built for speed, scale, and strange success.
             </p>
+            <div className="flex gap-4">
+               <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse" />
+               <div className="w-3 h-3 rounded-full bg-[#1bd2a4] animate-pulse delay-75" />
+            </div>
           </div>
+          
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-[10px] uppercase font-black tracking-[0.3em]">
             <div className="flex flex-col gap-5 text-slate-500">
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Hire</span>
-              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Pricing</a>
+              <a href="#" className="hover:text-blue-500 transition-colors">Project Audit</a>
+              <a href="#" className="hover:text-blue-500 transition-colors">Squad Search</a>
+              <a href="#" className="hover:text-blue-500 transition-colors">Pricing</a>
             </div>
             <div className="flex flex-col gap-5 text-slate-500">
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Build</span>
-              <a href="#" className="hover:text-blue-600 transition-colors">Network</a>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Talent Network</a>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Career Path</a>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Remote Roles</a>
+            </div>
+            <div className="flex flex-col gap-5 text-slate-500">
+              <span className={isDark ? 'text-white' : 'text-slate-900'}>Connect</span>
+              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="#" className="hover:text-white transition-colors">Twitter</a>
+              <a href="#" className="hover:text-white transition-colors">Contact</a>
             </div>
           </div>
         </div>
