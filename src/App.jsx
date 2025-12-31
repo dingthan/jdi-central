@@ -25,7 +25,11 @@ import {
   Sun,
   Moon,
   Menu,
-  X
+  X,
+  Smartphone,
+  Shield,
+  Rocket,
+  ExternalLink
 } from 'lucide-react';
 
 /**
@@ -134,6 +138,7 @@ const App = () => {
     { role: "Product Managers", icon: <Layout size={20} /> },
     { role: "Marketing Experts", icon: <BarChart3 size={20} /> },
   ];
+
   const featuredTalent = [
     { name: "Alex M.", role: "Senior Full Stack", skills: ["Rust", "React"], xp: "10+ yrs", rate: "$110/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" },
     { name: "Sarah K.", role: "Lead UI/UX", skills: ["Figma", "SaaS"], xp: "8 yrs", rate: "$95/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" },
@@ -143,11 +148,12 @@ const App = () => {
   ];
 
   const projectCatalog = [
-    { name: "FinEdge App", type: "Fintech", stack: ["Swift", "Node.js"], timeline: "4 Months", icon: <Smartphone className="text-blue-500" /> },
-    { name: "CyberArmor", type: "Security", stack: ["Go", "AWS"], timeline: "6 Months", icon: <Shield className="text-emerald-500" /> },
-    { name: "LaunchPad", type: "E-Commerce", stack: ["Next.js", "Shopify"], timeline: "3 Months", icon: <Rocket className="text-purple-500" /> },
-    { name: "GreenTrace", type: "Sustainability", stack: ["Python", "IoT"], timeline: "5 Months", icon: <Zap className="text-yellow-500" /> }
+    { name: "FinEdge App", type: "Fintech", stack: ["Swift", "Node.js"], timeline: "4 Months", icon: <Smartphone className="text-blue-500" size={32} /> },
+    { name: "CyberArmor", type: "Security", stack: ["Go", "AWS"], timeline: "6 Months", icon: <Shield className="text-emerald-500" size={32} /> },
+    { name: "LaunchPad", type: "E-Commerce", stack: ["Next.js", "Shopify"], timeline: "3 Months", icon: <Rocket className="text-purple-500" size={32} /> },
+    { name: "GreenTrace", type: "Sustainability", stack: ["Python", "IoT"], timeline: "5 Months", icon: <Zap className="text-yellow-500" size={32} /> }
   ];
+
   const themeMain = activeSide === 'client' ? '#1bd2a4' : '#3b82f6';
   const themeBg = activeSide === 'client' ? 'bg-[#1bd2a4]' : 'bg-blue-600';
   const themeText = activeSide === 'client' ? 'text-[#1bd2a4]' : 'text-blue-600';
@@ -200,7 +206,7 @@ const App = () => {
       />
 
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center transition-all duration-500 ${scrollY > 50 ? (isDark ? 'mix-blend-difference bg-black/60 backdrop-blur-xl py-4' : 'bg-white/80 backdrop-blur-xl py-4') : 'bg-transparent'}`}>
+      <nav className={`fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center transition-all duration-500 ${scrollY > 50 ? (isDark ? 'bg-black/60 backdrop-blur-xl py-4' : 'bg-white/80 backdrop-blur-xl py-4') : 'bg-transparent'}`}>
         <JDILogo side={activeSide}/>
         
         <div className="hidden lg:flex items-center space-x-10 font-bold uppercase text-[10px] tracking-[0.3em]">
@@ -306,11 +312,11 @@ const App = () => {
           ))}
         </div>
       </section>
+
       {/* DYNAMIC SECTION: Talent Pool vs Project Catalog */}
       <section className={`py-32 px-6 z-10 relative overflow-hidden transition-all duration-1000 ${isDark ? 'bg-[#050507]' : 'bg-slate-100'}`}>
         <div className="max-w-7xl mx-auto">
           
-          {/* Header based on active side */}
           <div className="mb-12 transition-all duration-500">
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest mb-4 ${themeText} ${themeBorder}`}>
               {activeSide === 'client' ? <Users size={12} /> : <Rocket size={12} />} 
@@ -322,10 +328,8 @@ const App = () => {
             </h2>
           </div>
 
-          {/* Conditional Content Wrapper */}
           <div className="relative min-h-[500px]">
-            
-            {/* TALENT POOL - Visible when 'client' is active */}
+            {/* TALENT POOL */}
             <div className={`flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory custom-scrollbar transition-all duration-700 ${activeSide === 'client' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20 pointer-events-none absolute inset-0'}`}>
               {featuredTalent.map((person, i) => (
                 <div key={i} className={`flex-shrink-0 w-[320px] md:w-[380px] snap-center p-8 rounded-[2.5rem] border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
@@ -350,11 +354,9 @@ const App = () => {
                   </button>
                 </div>
               ))}
-              
-              {/* CTA EXPLORE CARD */}
               <div className={`flex-shrink-0 w-[320px] md:w-[380px] snap-center p-1 rounded-[2.5rem] ${themeBg}`}>
                 <div className="w-full h-full p-8 rounded-[2.3rem] flex flex-col items-center justify-center text-center gap-6 cursor-pointer hover:bg-white/5 transition-colors">
-                  <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><Plus size={40} className="text-white" /></div>
+                  <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><Users size={40} className="text-white" /></div>
                   <div className="text-white">
                     <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-2">Explore 1,000+</h3>
                     <p className="text-sm font-bold opacity-80 mb-6">Verified Specialists Ready</p>
@@ -364,7 +366,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* PROJECT CATALOG - Visible when 'talent' is active */}
+            {/* PROJECT CATALOG */}
             <div className={`flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory custom-scrollbar transition-all duration-700 ${activeSide === 'talent' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20 pointer-events-none absolute inset-0'}`}>
               {projectCatalog.map((proj, i) => (
                 <div key={i} className={`flex-shrink-0 w-[320px] md:w-[380px] snap-center p-8 rounded-[2.5rem] border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
@@ -390,11 +392,9 @@ const App = () => {
                   </button>
                 </div>
               ))}
-
-              {/* PROJECT CTA CARD */}
               <div className={`flex-shrink-0 w-[320px] md:w-[380px] snap-center p-1 rounded-[2.5rem] ${themeBg}`}>
                 <div className="w-full h-full p-8 rounded-[2.3rem] flex flex-col items-center justify-center text-center gap-6 cursor-pointer hover:bg-white/5 transition-colors">
-                  <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><Zap size={40} className="text-white" /></div>
+                  <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><Rocket size={40} className="text-white" /></div>
                   <div className="text-white">
                     <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-2">Build Yours</h3>
                     <p className="text-sm font-bold opacity-80 mb-6">Expert Squads Ready to Ship</p>
@@ -403,10 +403,10 @@ const App = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
+
       {/* AI SECTION */}
       <section className={`relative py-24 px-6 z-10 border-b ${isDark ? 'bg-[#050507] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
         <div className="max-w-4xl mx-auto">
@@ -542,6 +542,7 @@ const App = () => {
           </div>
         </div>
       </section>
+
       {/* Freelancer Network CTA Section */}
       <section className="relative py-32 px-6 overflow-hidden">
         <div className={`absolute inset-0 opacity-10 transition-colors duration-700 ${themeBg}`} style={{ clipPath: 'polygon(0 15%, 100% 0, 100% 85%, 0 100%)' }}></div>
