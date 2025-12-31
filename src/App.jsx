@@ -340,7 +340,7 @@ const App = () => {
                       <p className="text-[10px] font-bold uppercase opacity-60">{person.role}</p>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 mb-8 h-16">
+                  <div className="flex flex-wrap gap-2 mb-8 h-5">
                     {person.skills.map((skill, sk) => (
                       <span key={sk} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase ${isDark ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>{skill}</span>
                     ))}
