@@ -314,7 +314,7 @@ const App = () => {
       </section>
 
       {/* DYNAMIC SECTION: Talent Pool vs Project Catalog */}
-      <section className={`py-32 px-6 z-10 relative overflow-hidden transition-all duration-1000 ${isDark ? 'bg-[#050507]' : 'bg-slate-100'}`}>
+      <section className={`py-16 pb-6 px-6 z-10 relative overflow-hidden transition-all duration-1000 ${isDark ? 'bg-[#050507]' : 'bg-slate-100'}`}>
         <div className="max-w-7xl mx-auto">
           
           <div className="mb-12 transition-all duration-500">
@@ -408,7 +408,7 @@ const App = () => {
       </section>
 
       {/* AI SECTION */}
-      <section className={`relative py-24 px-6 z-10 border-b ${isDark ? 'bg-[#050507] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
+      <section className={`relative py-24 pt-6 px-6 z-10 border-b ${isDark ? 'bg-[#050507] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-8 transition-all duration-500">
             {activeSide === 'client' ? (
