@@ -336,7 +336,7 @@ const App = () => {
             <h1 className={`text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Hire <br /><span className={`text-transparent ${isDark ? 'stroke-green-dark' : 'stroke-green-light'}`}>Precision.</span>
             </h1>
-            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Access individual elite software engineers and designers.</p>
+            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Access elite remote software engineers, designers and more.</p>
             <button className={`flex items-center gap-4 bg-[#1bd2a4] hover:bg-[#18b88f] text-black px-8 py-4 rounded-sm font-black transition-all italic group shadow-lg`}>
               HIRE TOP TALENT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -352,7 +352,7 @@ const App = () => {
             <h1 className={`text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Build <br /><span className={`text-transparent ${isDark ? 'stroke-blue-dark' : 'stroke-blue-light'}`}>The Future.</span>
             </h1>
-            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Deploy a dedicated JDI squad to ship mission-critical products.</p>
+            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Deploy a dedicated squad to ship mission-critical products.</p>
             <button className={`flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white font-black px-8 py-4 rounded-sm transition-all italic group shadow-lg`}>
               START A PROJECT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
