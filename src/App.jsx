@@ -544,7 +544,7 @@ const App = () => {
       </section>
 
       {/* TESTIMONIALS SECTION */}
-      <section className={`py-32 px-6 relative z-10 transition-colors duration-1000 ${isDark ? 'bg-[#020203]' : 'bg-white'}`}>
+      <section className={`py-24 px-6 relative z-10 transition-colors duration-1000 ${isDark ? 'bg-[#020203]' : 'bg-white'}`}>
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-16">
             <div className="max-w-2xl">
@@ -579,7 +579,12 @@ const App = () => {
                 
                 <div className="relative z-10 flex flex-col h-full">
                   <div className="mb-8">
-                    <img src={t.photo} alt={t.name} className={`w-20 h-20 rounded-[2rem] bg-slate-800 border-4 mb-6 group-hover:rotate-3 transition-transform ${themeBorder}`} />
+                    <div className="flex items-center justify-between mb-6">
+                      <img src={t.photo} alt={t.name} className={`w-20 h-20 rounded-[2rem] bg-slate-800 border-4 group-hover:rotate-3 transition-transform ${themeBorder}`} />
+                      <button className={`flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full border transition-all ${isDark ? 'border-white/10 hover:bg-white/10' : 'border-slate-200 hover:bg-white'} ${themeText}`}>
+                        Read Story <ArrowRight size={14} />
+                      </button>
+                    </div>
                     <h4 className="text-2xl font-black italic uppercase tracking-tighter leading-none">{t.name}</h4>
                     <div className="flex items-center gap-2 mt-2">
                       <span className={`text-[10px] font-black uppercase tracking-widest ${themeText}`}>{t.title}</span>
@@ -592,10 +597,15 @@ const App = () => {
                     "{t.quote}"
                   </p>
 
-                  <div className="mt-auto pt-6 border-t border-dashed border-white/10">
-                    <div className="flex items-center gap-1">
-                      {[1,2,3,4,5].map(star => <Star key={star} size={12} className={themeText} fill="currentColor" />)}
-                      <span className="ml-2 text-[9px] font-black uppercase opacity-40">Verified Client Review</span>
+                  <div className="mt-auto flex flex-col gap-6">
+                    <button className={`flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] transition-all hover:translate-x-1 ${themeText}`}>
+                      Read full success story <ArrowRight size={14} />
+                    </button>
+                    <div className="pt-6 border-t border-dashed border-white/10">
+                      <div className="flex items-center gap-1">
+                        {[1,2,3,4,5].map(star => <Star key={star} size={12} className={themeText} fill="currentColor" />)}
+                        <span className="ml-2 text-[9px] font-black uppercase opacity-40">Verified Client Review</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -646,7 +656,9 @@ const App = () => {
         <div className={`absolute inset-0 opacity-10 transition-colors duration-700 ${themeBg}`} style={{ clipPath: 'polygon(0 15%, 100% 0, 100% 85%, 0 100%)' }}></div>
         <div className="max-w-5xl mx-auto relative z-10 text-center">
           <div className={`inline-flex items-center justify-center p-4 rounded-full border mb-8 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-slate-200 shadow-sm'}`}>
-            <Award className={themeText} size={40} />
+            <button className="w-10 h-10 flex items-center justify-center">
+              <Award className={themeText} size={40} />
+            </button>
           </div>
           <h2 className={`text-5xl md:text-7xl font-black uppercase italic mb-6 tracking-tighter leading-none ${isDark ? 'text-white' : 'text-slate-900'}`}>
             Are you part of the <span className={themeText}>Top 3%?</span>
