@@ -21,11 +21,13 @@ import {
   Search,
   Menu,
   X,
-  Trophy
+  Trophy,
+  CalendarDays,
+  HelpCircle
 } from 'lucide-react';
 
 /**
- * JDI Central - Color Adaptive Edition (Color Swap Update)
+ * JDI Central - Color Adaptive Edition (Consultation Update)
  * "Hire Precision" -> Emerald Green (#1bd2a4)
  * "Build the Future" -> Electric Blue (#3b82f6)
  */
@@ -146,12 +148,11 @@ const App = () => {
     { role: "Marketing Experts", icon: <BarChart3 size={20} /> },
   ];
 
-  // SWAPPED LOGIC: client -> Emerald Green, talent -> Electric Blue
+  // Logic: client -> Emerald Green, talent -> Electric Blue
   const themeMain = activeSide === 'client' ? '#1bd2a4' : '#3b82f6';
   const themeBg = activeSide === 'client' ? 'bg-[#1bd2a4]' : 'bg-blue-600';
   const themeText = activeSide === 'client' ? 'text-[#1bd2a4]' : 'text-blue-500';
   const themeBorder = activeSide === 'client' ? 'border-[#1bd2a4]/30' : 'border-blue-500/30';
-  const themeGlow = activeSide === 'client' ? 'shadow-[0_0_50px_-12px_rgba(27,210,164,0.5)]' : 'shadow-[0_0_50px_-12px_rgba(59,130,246,0.5)]';
 
   const JDILogo = ({ side }) => (
     <div className="flex items-center gap-3 group cursor-pointer">
@@ -223,7 +224,7 @@ const App = () => {
       <section className="relative pt-32 min-h-[90vh] flex flex-col justify-center px-6 z-10">
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-6 relative">
           
-          {/* Hire Precision - NOW EMERALD */}
+          {/* Hire Precision - EMERALD */}
           <div 
             onMouseEnter={() => { setActiveSide('client'); setAiResult(null); }} 
             className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'client' ? 'bg-[#1bd2a4]/5 border-[#1bd2a4]/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
@@ -240,7 +241,7 @@ const App = () => {
             </button>
           </div>
 
-          {/* Build the Future - NOW BLUE */}
+          {/* Build the Future - BLUE */}
           <div 
             onMouseEnter={() => { setActiveSide('talent'); setAiResult(null); }} 
             className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'talent' ? 'bg-blue-600/5 border-blue-500/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
@@ -339,6 +340,7 @@ const App = () => {
             </div>
           ))}
         </div>
+        <div className="absolute right-0 top-0 text-[10rem] font-black opacity-[0.03] select-none pointer-events-none -mr-20 uppercase">SYSTEMS</div>
       </section>
 
       {/* Screening Section */}
@@ -369,6 +371,42 @@ const App = () => {
                 <p className="text-[10px] text-slate-500 uppercase tracking-tighter">{card.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CONSULTATION SECTION (NEW) */}
+      <section className="py-24 px-6 relative z-10 border-y border-white/5 bg-black">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12 bg-[#0a0a0c] p-8 md:p-16 rounded-[3rem] border border-white/10 overflow-hidden relative group">
+            <div className={`absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 transition-colors duration-700 ${themeBg}`} />
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <HelpCircle className={themeText} size={24} />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Still Deciding?</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black uppercase italic mb-4 leading-[0.9]">
+                Not Sure <br />Where to <span className={themeText}>Start?</span>
+              </h2>
+              <p className="text-slate-400 text-lg font-medium max-w-sm">
+                Speak with our strategy team to determine the best model for your unique business goals.
+              </p>
+            </div>
+
+            <div className="relative z-10 w-full md:w-auto">
+              <a 
+                href="#" 
+                className={`flex items-center justify-center gap-4 px-10 py-6 rounded-sm font-black text-lg uppercase italic transition-all shadow-2xl hover:scale-105 active:scale-95 ${themeBg} ${activeSide === 'client' ? 'text-black' : 'text-white'}`}
+              >
+                <CalendarDays size={24} />
+                BOOK A FREE CONSULTATION
+                <ArrowRight size={20} />
+              </a>
+              <p className="text-center md:text-left text-[9px] uppercase tracking-widest text-slate-600 mt-4 font-black">
+                15-Minute Strategy Session • No Obligation
+              </p>
+            </div>
           </div>
         </div>
       </section>
