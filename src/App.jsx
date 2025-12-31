@@ -214,22 +214,6 @@ const App = () => {
           filter: 'blur(140px)'
         }}
       />
-
-      {/* Navigation 
-      <nav className="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center border-b border-white/5 backdrop-blur-xl bg-black/20">
-        <JDILogo />
-        <div className="hidden md:flex space-x-10 font-bold uppercase text-[10px] tracking-[0.3em]">
-          <a href="#" className="hover:text-blue-400 transition-colors">Hire Talent</a>
-          <a href="#" className="hover:text-blue-400 transition-colors">Solutions</a>
-          <a href="#" className="hover:text-blue-400 transition-colors">Case Studies</a>
-          <a href="#" className="text-slate-500 hover:text-white transition-colors">Client Login</a>
-        </div>
-        <button className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-500 shadow-xl ${activeSide === 'client' ? 'bg-blue-600 text-white' : 'bg-[#1bd2a4] text-black'}`}>
-          Hire Top 3%
-        </button>
-      </nav>
-
-      Navigation */}
       <nav className="fixed top-0 w-full z-50 mix-blend-difference px-6 py-6 flex justify-between items-center">
         <JDILogo side={activeSide} />
         
