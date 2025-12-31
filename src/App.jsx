@@ -29,7 +29,8 @@ import {
   Smartphone,
   Shield,
   Rocket,
-  ExternalLink
+  ExternalLink,
+  Quote
 } from 'lucide-react';
 
 /**
@@ -124,7 +125,7 @@ const App = () => {
     callGemini(prompt, systemPrompt);
   };
 
-  const stats = [
+  const statsList = [
     { label: 'Verified Talents', value: '1,500+' },
     { label: 'Client Retention', value: '97%' },
     { label: 'Global Availability', value: '24/7' },
@@ -152,6 +153,41 @@ const App = () => {
     { name: "CyberArmor", type: "Security", stack: ["Go", "AWS"], timeline: "6 Months", icon: <Shield className="text-emerald-500" size={32} /> },
     { name: "LaunchPad", type: "E-Commerce", stack: ["Next.js", "Shopify"], timeline: "3 Months", icon: <Rocket className="text-purple-500" size={32} /> },
     { name: "GreenTrace", type: "Sustainability", stack: ["Python", "IoT"], timeline: "5 Months", icon: <Zap className="text-yellow-500" size={32} /> }
+  ];
+
+  const testimonials = [
+    {
+      name: "Marcus Thorne",
+      title: "CTO",
+      company: "Nebula Systems",
+      quote: "The speed at which JDI Central integrated a Rust expert into our core infrastructure team was staggering. We went from bottleneck to deployment in three weeks.",
+      photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus",
+      size: "large"
+    },
+    {
+      name: "Linda Chen",
+      title: "VP of Product",
+      company: "Velocity Fintech",
+      quote: "JDI doesn't just provide 'hands'. They provided a squad that fundamentally improved our mobile architecture. True partners in every sense.",
+      photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Linda",
+      size: "small"
+    },
+    {
+      name: "Jameson Blake",
+      title: "Founder",
+      company: "EcoSphere",
+      quote: "Working with their UI/UX leads changed how we think about our user journey. High-caliber design talent is hard to find; JDI has it in abundance.",
+      photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jameson",
+      size: "small"
+    },
+    {
+      name: "Sofia Rodriguez",
+      title: "Head of Engineering",
+      company: "Quantum Guard",
+      quote: "Screening technical talent is usually a full-time job for me. With JDI, I trust their 3% screening process implicitly. They haven't missed once.",
+      photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia",
+      size: "large"
+    }
   ];
 
   const themeMain = activeSide === 'client' ? '#1bd2a4' : '#3b82f6';
@@ -465,7 +501,7 @@ const App = () => {
       {/* Stats Section */}
       <section className={`py-24 relative z-10 ${isDark ? 'bg-white text-black' : 'bg-slate-900 text-white'}`}>
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left">
-          {stats.map((s, i) => (
+          {statsList.map((s, i) => (
             <div key={i}>
               <div className="text-4xl md:text-6xl font-black italic mb-2 tracking-tighter">{s.value}</div>
               <div className={`text-[10px] font-black uppercase tracking-[0.3em] ${isDark ? 'opacity-50' : 'opacity-40'}`}>{s.label}</div>
@@ -501,6 +537,68 @@ const App = () => {
                 <div className={`mb-6 transition-colors duration-700 ${themeText}`}>{card.icon}</div>
                 <h4 className={`font-black uppercase italic mb-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>{card.title}</h4>
                 <p className="text-[10px] text-slate-500 uppercase tracking-tighter">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS SECTION */}
+      <section className={`py-32 px-6 relative z-10 transition-colors duration-1000 ${isDark ? 'bg-[#020203]' : 'bg-white'}`}>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-16">
+            <div className="max-w-2xl">
+              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest mb-6 ${themeText} ${themeBorder}`}>
+                <Star size={12} fill="currentColor" /> Voice of Partnership
+              </div>
+              <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter leading-none mb-4">
+                Tested by <span className={themeText}>Leaders.</span>
+              </h2>
+              <p className={`text-lg font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                Join hundreds of industry-leading companies that leverage JDI Central to scale their technical output without compromising on quality.
+              </p>
+            </div>
+            <div className="hidden md:flex gap-4">
+              <div className={`w-12 h-12 rounded-full border flex items-center justify-center ${themeBorder} ${themeText}`}>
+                 <Quote size={20} />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-12 gap-6">
+            {testimonials.map((t, i) => (
+              <div 
+                key={i} 
+                className={`group relative p-8 md:p-10 rounded-[3rem] border transition-all duration-500 overflow-hidden ${
+                  t.size === 'large' ? 'md:col-span-7' : 'md:col-span-5'
+                } ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/[0.08]' : 'bg-slate-50 border-slate-200 hover:bg-slate-100 shadow-sm'}`}
+              >
+                <div className={`absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform ${themeText}`}>
+                  <Quote size={80} />
+                </div>
+                
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="mb-8">
+                    <img src={t.photo} alt={t.name} className={`w-20 h-20 rounded-[2rem] bg-slate-800 border-4 mb-6 group-hover:rotate-3 transition-transform ${themeBorder}`} />
+                    <h4 className="text-2xl font-black italic uppercase tracking-tighter leading-none">{t.name}</h4>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`text-[10px] font-black uppercase tracking-widest ${themeText}`}>{t.title}</span>
+                      <span className="w-1 h-1 rounded-full bg-slate-500" />
+                      <span className="text-[10px] font-black uppercase tracking-widest opacity-60">{t.company}</span>
+                    </div>
+                  </div>
+                  
+                  <p className={`text-xl md:text-2xl font-medium leading-tight mb-8 ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                    "{t.quote}"
+                  </p>
+
+                  <div className="mt-auto pt-6 border-t border-dashed border-white/10">
+                    <div className="flex items-center gap-1">
+                      {[1,2,3,4,5].map(star => <Star key={star} size={12} className={themeText} fill="currentColor" />)}
+                      <span className="ml-2 text-[9px] font-black uppercase opacity-40">Verified Client Review</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
