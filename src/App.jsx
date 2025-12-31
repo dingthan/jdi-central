@@ -322,6 +322,27 @@ const App = () => {
           </button>
         </div>
       </nav>
+ {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className={`fixed inset-0 z-[60] lg:hidden p-6 transition-all duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
+          <div className="flex justify-between items-center mb-16">
+            <JDILogo side={activeSide} />
+            <button onClick={() => setIsMenuOpen(false)} className="p-2"><X size={32} /></button>
+          </div>
+          <div className="flex flex-col gap-10 text-4xl font-black uppercase italic italic tracking-tighter">
+            <a href="#" onClick={() => setIsMenuOpen(false)}>Hire Talent</a>
+            <a href="#" onClick={() => setIsMenuOpen(false)}>Solutions</a>
+            <a href="#" onClick={() => setIsMenuOpen(false)}>Case Studies</a>
+            <a href="#" onClick={() => setIsMenuOpen(false)}>Client Login</a>
+            <button 
+              onClick={() => { toggleTheme(); setIsMenuOpen(false); }}
+              className="text-left flex items-center gap-4"
+            >
+              {isDark ? <Sun /> : <Moon />} {isDark ? 'Light' : 'Dark'} Mode
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section className="relative pt-32 min-h-[90vh] flex flex-col justify-center px-6 z-10">
