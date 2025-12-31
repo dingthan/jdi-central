@@ -30,14 +30,17 @@ import {
   Shield,
   Rocket,
   ExternalLink,
-  Quote
+  Quote,
+  Activity,
+  Layers,
+  Crosshair,
+  TrendingUp,
+  Target
 } from 'lucide-react';
 
 /**
- * JDI Central - Adaptive Theme Edition
- * Dark/Light Mode Support
- * "Hire Precision" -> Emerald Green (#1bd2a4)
- * "Build the Future" -> Electric Blue (#3b82f6)
+ * JDI Central - Corrected Version
+ * Fixes: Crosshair reference error and React child object error
  */
 
 const apiKey = ""; 
@@ -46,7 +49,7 @@ const GEMINI_MODEL = "gemini-2.5-flash-preview-09-2025";
 const App = () => {
   const [scrollY, setScrollY] = useState(0);
   const [activeSide, setActiveSide] = useState('client'); 
-  const [theme, setTheme] = useState('dark'); // 'dark' or 'light'
+  const [theme, setTheme] = useState('dark'); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const marqueeRef = useRef(null);
@@ -127,32 +130,78 @@ const App = () => {
 
   const statsList = [
     { label: 'Verified Talents', value: '1,500+' },
-    { label: 'Client Retention', value: '95%' },
+    { label: 'Client Retention', value: '97%' },
     { label: 'Global Availability', value: '24/7' },
     { label: 'Time to Hire', value: '< 48h' },
   ];
 
+  // Store Icon components as references to avoid child object rendering errors
   const skillsets = [
-    { role: "Developers", icon: <Cpu size={20} /> },
-    { role: "Designers", icon: <Palette size={20} /> },
-    { role: "Project Managers", icon: <Briefcase size={20} /> },
-    { role: "Product Managers", icon: <Layout size={20} /> },
-    { role: "Marketing Experts", icon: <BarChart3 size={20} /> },
+    { role: "Developers", Icon: Cpu },
+    { role: "Designers", Icon: Palette },
+    { role: "Project Managers", Icon: Briefcase },
+    { role: "Product Managers", Icon: Layout },
+    { role: "Marketing Experts", Icon: BarChart3 },
   ];
 
   const featuredTalent = [
-    { name: "Alex M.", role: "Senior Full Stack", skills: ["Rust", "React"], xp: "10+ yrs", rate: "$22/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" },
-    { name: "Sarah K.", role: "Lead UI/UX", skills: ["Figma", "SaaS"], xp: "8 yrs", rate: "$15/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" },
-    { name: "David L.", role: "Blockchain Dev", skills: ["Solidity", "Go"], xp: "6 yrs", rate: "$16/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David" },
-    { name: "Elena R.", role: "DevOps Engineer", skills: ["K8s", "Terraform"], xp: "7 yrs", rate: "$20/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena" },
-    { name: "James W.", role: "Python/AI Specialist", skills: ["PyTorch", "LLMs"], xp: "5 yrs", rate: "$18/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James" }
+    { 
+      name: "Alex M.", 
+      role: "Senior Full Stack", 
+      skills: ["Rust", "React"], 
+      xp: "10+ yrs", 
+      rate: "$110/hr", 
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+      stats: { power: 98, agility: 92, speed: 95 },
+      winRate: "99%"
+    },
+    { 
+      name: "Sarah K.", 
+      role: "Lead UI/UX", 
+      skills: ["Figma", "SaaS"], 
+      xp: "8 yrs", 
+      rate: "$95/hr", 
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+      stats: { power: 94, agility: 99, speed: 91 },
+      winRate: "100%"
+    },
+    { 
+      name: "David L.", 
+      role: "Blockchain Dev", 
+      skills: ["Solidity", "Go"], 
+      xp: "6 yrs", 
+      rate: "$140/hr", 
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+      stats: { power: 99, agility: 88, speed: 90 },
+      winRate: "97%"
+    },
+    { 
+      name: "Elena R.", 
+      role: "DevOps Engineer", 
+      skills: ["K8s", "Terraform"], 
+      xp: "7 yrs", 
+      rate: "$125/hr", 
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
+      stats: { power: 96, agility: 91, speed: 98 },
+      winRate: "99%"
+    },
+    { 
+      name: "James W.", 
+      role: "AI Specialist", 
+      skills: ["PyTorch", "LLMs"], 
+      xp: "5 yrs", 
+      rate: "$130/hr", 
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
+      stats: { power: 97, agility: 94, speed: 93 },
+      winRate: "100%"
+    }
   ];
 
   const projectCatalog = [
-    { name: "FinEdge App", type: "Fintech", stack: ["Swift", "Node.js"], timeline: "4 Months", icon: <Smartphone className="text-blue-500" size={32} /> },
-    { name: "CyberArmor", type: "Security", stack: ["Go", "AWS"], timeline: "6 Months", icon: <Shield className="text-emerald-500" size={32} /> },
-    { name: "LaunchPad", type: "E-Commerce", stack: ["Next.js", "Shopify"], timeline: "3 Months", icon: <Rocket className="text-purple-500" size={32} /> },
-    { name: "GreenTrace", type: "Sustainability", stack: ["Python", "IoT"], timeline: "5 Months", icon: <Zap className="text-yellow-500" size={32} /> }
+    { name: "FinEdge App", type: "Fintech", stack: ["Swift", "Node.js"], timeline: "4 Months", Icon: Smartphone, iconColor: "text-blue-500" },
+    { name: "CyberArmor", type: "Security", stack: ["Go", "AWS"], timeline: "6 Months", Icon: Shield, iconColor: "text-emerald-500" },
+    { name: "LaunchPad", type: "E-Commerce", stack: ["Next.js", "Shopify"], timeline: "3 Months", Icon: Rocket, iconColor: "text-purple-500" },
+    { name: "GreenTrace", type: "Sustainability", stack: ["Python", "IoT"], timeline: "5 Months", Icon: Zap, iconColor: "text-yellow-500" }
   ];
 
   const testimonials = [
@@ -168,7 +217,7 @@ const App = () => {
       name: "Linda Chen",
       title: "VP of Product",
       company: "Velocity Fintech",
-      quote: "JDI Central doesn't just provide 'hands'. They provided a squad that fundamentally improved our mobile architecture. True partners in every sense.",
+      quote: "JDI doesn't just provide 'hands'. They provided a squad that fundamentally improved our mobile architecture. True partners in every sense.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Linda",
       size: "small"
     },
@@ -176,7 +225,7 @@ const App = () => {
       name: "Jameson Blake",
       title: "Founder",
       company: "EcoSphere",
-      quote: "Working with their UI/UX expert changed how we think about our user journey. High-caliber design talent is hard to find; JDI Central has it in abundance.",
+      quote: "Working with their UI/UX leads changed how we think about our user journey. High-caliber design talent is hard to find; JDI has it in abundance.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jameson",
       size: "small"
     },
@@ -184,7 +233,7 @@ const App = () => {
       name: "Sofia Rodriguez",
       title: "Head of Engineering",
       company: "Quantum Guard",
-      quote: "Screening technical talent is usually a full-time job for me. With JDI Central, I trust their screening process implicitly. They haven't missed once.",
+      quote: "Screening technical talent is usually a full-time job for me. With JDI, I trust their 3% screening process implicitly. They haven't missed once.",
       photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia",
       size: "large"
     }
@@ -274,33 +323,9 @@ const App = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className={`fixed inset-0 z-[60] lg:hidden p-6 transition-all duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
-          <div className="flex justify-between items-center mb-16">
-            <JDILogo side={activeSide} />
-            <button onClick={() => setIsMenuOpen(false)} className="p-2"><X size={32} /></button>
-          </div>
-          <div className="flex flex-col gap-10 text-4xl font-black uppercase italic italic tracking-tighter">
-            <a href="#" onClick={() => setIsMenuOpen(false)}>Hire Talent</a>
-            <a href="#" onClick={() => setIsMenuOpen(false)}>Solutions</a>
-            <a href="#" onClick={() => setIsMenuOpen(false)}>Case Studies</a>
-            <a href="#" onClick={() => setIsMenuOpen(false)}>Client Login</a>
-            <button 
-              onClick={() => { toggleTheme(); setIsMenuOpen(false); }}
-              className="text-left flex items-center gap-4"
-            >
-              {isDark ? <Sun /> : <Moon />} {isDark ? 'Light' : 'Dark'} Mode
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Hero Section */}
       <section className="relative pt-32 min-h-[90vh] flex flex-col justify-center px-6 z-10">
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-6 relative">
-          
-          {/* Hire Precision - EMERALD */}
           <div 
             onMouseEnter={() => { setActiveSide('client'); setAiResult(null); }} 
             className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'client' ? (isDark ? 'bg-[#1bd2a4]/5 border-[#1bd2a4]/40' : 'bg-[#1bd2a4]/10 border-[#1bd2a4]/60') : 'opacity-40 border-transparent hover:opacity-60'}`}
@@ -311,13 +336,12 @@ const App = () => {
             <h1 className={`text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Hire <br /><span className={`text-transparent ${isDark ? 'stroke-green-dark' : 'stroke-green-light'}`}>Precision.</span>
             </h1>
-            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Access remote elite software engineers, designers and more.</p>
+            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Access individual elite software engineers and designers.</p>
             <button className={`flex items-center gap-4 bg-[#1bd2a4] hover:bg-[#18b88f] text-black px-8 py-4 rounded-sm font-black transition-all italic group shadow-lg`}>
               HIRE TOP TALENT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
-          {/* Build the Future - BLUE */}
           <div 
             onMouseEnter={() => { setActiveSide('talent'); setAiResult(null); }} 
             className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'talent' ? (isDark ? 'bg-blue-600/5 border-blue-500/40' : 'bg-blue-600/10 border-blue-500/60') : 'opacity-40 border-transparent hover:opacity-60'}`}
@@ -328,7 +352,7 @@ const App = () => {
             <h1 className={`text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Build <br /><span className={`text-transparent ${isDark ? 'stroke-blue-dark' : 'stroke-blue-light'}`}>The Future.</span>
             </h1>
-            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Provide a dedicated squad to ship mission-critical products.</p>
+            <p className={`text-lg mb-8 max-w-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Deploy a dedicated JDI squad to ship mission-critical products.</p>
             <button className={`flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white font-black px-8 py-4 rounded-sm transition-all italic group shadow-lg`}>
               START A PROJECT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
@@ -341,7 +365,9 @@ const App = () => {
         <div ref={marqueeRef} className={`flex whitespace-nowrap animate-marquee-fast ${isPaused ? 'pause' : ''}`}>
           {[...skillsets, ...skillsets, ...skillsets].map((skill, idx) => (
             <div key={idx} className="flex items-center gap-8 mx-12 transition-all duration-300 select-none">
-              <span className={`transition-colors duration-500 ${themeText} ${isDark ? 'opacity-40' : 'opacity-70'}`}>{skill.icon}</span>
+              <span className={`transition-colors duration-500 ${themeText} ${isDark ? 'opacity-40' : 'opacity-70'}`}>
+                <skill.Icon size={20} />
+              </span>
               <span className={`text-3xl md:text-5xl font-black uppercase italic tracking-tighter transition-colors duration-300 ${isDark ? 'text-white/30 hover:text-white' : 'text-slate-300 hover:text-slate-900'}`}>{skill.role}</span>
               <span className={`w-2 h-2 rounded-full ${themeBg} opacity-20 mx-4 transition-colors duration-500`} />
             </div>
@@ -349,7 +375,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* DYNAMIC SECTION: Talent Pool vs Project Catalog */}
+      {/* TALENT SECTION */}
       <section className={`py-16 pb-6 px-6 z-10 relative overflow-hidden transition-all duration-1000 ${isDark ? 'bg-[#050507]' : 'bg-slate-100'}`}>
         <div className="max-w-7xl mx-auto">
           
@@ -359,85 +385,142 @@ const App = () => {
               {activeSide === 'client' ? 'The Verified Pool' : 'Success Stories'}
             </div>
             <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none">
-              {activeSide === 'client' ? 'Meet Our ' : 'Our Portfolio of '}
-              <span className={themeText}>{activeSide === 'client' ? 'Elite Talent.' : 'Products.'}</span>
+              {activeSide === 'client' ? 'Meet our elite ' : 'Our Portfolio of '}
+              <span className={themeText}>{activeSide === 'client' ? 'talent.' : 'Products.'}</span>
             </h2>
           </div>
 
-          <div className="relative min-h-[500px]">
-            {/* TALENT POOL */}
-            <div className={`flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory custom-scrollbar transition-all duration-700 ${activeSide === 'client' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20 pointer-events-none absolute inset-0'}`}>
+          <div className="relative min-h-[600px]">
+            {/* TALENT POOL CARDS */}
+            <div className={`flex overflow-x-auto gap-8 pb-12 snap-x snap-mandatory custom-scrollbar transition-all duration-700 ${activeSide === 'client' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20 pointer-events-none absolute inset-0'}`}>
               {featuredTalent.map((person, i) => (
-                <div key={i} className={`flex-shrink-0 w-[320px] md:w-[380px] snap-center p-8 rounded-[2.5rem] border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
-                  <div className="flex items-center gap-4 mb-8">
-                    <img src={person.avatar} alt={person.name} className={`w-16 h-16 rounded-2xl bg-slate-800 border-2 ${themeBorder}`} />
+                <div 
+                  key={i} 
+                  className={`flex-shrink-0 w-[340px] md:w-[400px] snap-center relative overflow-hidden transition-all duration-500 group rounded-[1rem] border-2 shadow-2xl ${isDark ? 'bg-[#0a0a0c] border-white/10 hover:border-[#1bd2a4]' : 'bg-white border-slate-200 hover:border-emerald-500'}`}
+                >
+                  <div className={`absolute top-0 left-0 w-full h-[2px] z-20 opacity-0 group-hover:opacity-100 group-hover:animate-scan transition-opacity ${themeBg}`} />
+                  
+                  <div className={`p-5 flex justify-between items-start border-b ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
                     <div>
-                      <h4 className="text-xl font-black italic uppercase tracking-tighter">{person.name}</h4>
-                      <p className="text-[10px] font-bold uppercase opacity-60">{person.role}</p>
+                      <h4 className="text-2xl font-black italic uppercase tracking-tighter leading-none mb-1 group-hover:text-emerald-500 transition-colors">{person.name}</h4>
+                      <p className="text-[10px] font-black uppercase opacity-40 italic">{person.role}</p>
+                    </div>
+                    <div className={`px-2 py-1 rounded-sm text-[9px] font-black italic uppercase ${isDark ? 'bg-white/5 text-white' : 'bg-slate-100 text-slate-800'}`}>
+                      {person.rate}
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2 mb-8 h-5">
-                    {person.skills.map((skill, sk) => (
-                      <span key={sk} className={`px-3 py-1 rounded-full text-[9px] font-black uppercase ${isDark ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-700'}`}>{skill}</span>
-                    ))}
+
+                  <div className="p-6">
+                    <div className="flex gap-6 mb-8">
+                      <div className="relative">
+                        <div className={`absolute -inset-1 blur-sm opacity-20 group-hover:opacity-60 transition-opacity rounded-xl ${themeBg}`} />
+                        <div className={`relative w-28 h-28 rounded-xl bg-slate-800 border-2 overflow-hidden transition-transform group-hover:scale-105 ${themeBorder}`}>
+                           <img src={person.avatar} alt={person.name} className="w-full h-full object-cover" />
+                           <div className="absolute inset-0 border-[8px] border-transparent border-t-white/10 border-l-white/10 pointer-events-none" />
+                        </div>
+                      </div>
+
+                      <div className="flex-1 space-y-4">
+                         <div className="flex justify-between items-center">
+                            <span className="text-[9px] font-black uppercase opacity-50 flex items-center gap-1"><TrendingUp size={10} /> Experience</span>
+                            <span className="text-xs font-black uppercase">{person.xp}</span>
+                         </div>
+                         <div className="flex justify-between items-center">
+                            <span className="text-[9px] font-black uppercase opacity-50 flex items-center gap-1"><Trophy size={10} /> Win Rate</span>
+                            <span className={`text-xs font-black uppercase ${themeText}`}>{person.winRate}</span>
+                         </div>
+                         <div className="flex flex-wrap gap-1">
+                            {person.skills.map((s, idx) => (
+                              <span key={idx} className={`px-2 py-0.5 rounded-sm text-[8px] font-black uppercase ${isDark ? 'bg-white/5 border border-white/10' : 'bg-slate-50 border border-slate-200'}`}>{s}</span>
+                            ))}
+                         </div>
+                      </div>
+                    </div>
+
+                    <div className={`space-y-4 p-5 rounded-lg mb-6 ${isDark ? 'bg-black/40' : 'bg-slate-50'}`}>
+                       <div className="space-y-1.5">
+                          <div className="flex justify-between text-[8px] font-black uppercase tracking-widest opacity-60">
+                             <span>Skill Cap</span>
+                             <span>{person.stats.power}/100</span>
+                          </div>
+                          <div className={`h-1.5 w-full rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}>
+                             <div className={`h-full transition-all duration-1000 group-hover:w-[${person.stats.power}%] ${themeBg}`} style={{ width: `${person.stats.power}%` }} />
+                          </div>
+                       </div>
+                       <div className="space-y-1.5">
+                          <div className="flex justify-between text-[8px] font-black uppercase tracking-widest opacity-60">
+                             <span>Adaptability</span>
+                             <span>{person.stats.agility}/100</span>
+                          </div>
+                          <div className={`h-1.5 w-full rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}>
+                             <div className="h-full bg-blue-500 transition-all duration-1000 group-hover:w-[${person.stats.agility}%]" style={{ width: `${person.stats.agility}%` }} />
+                          </div>
+                       </div>
+                       <div className="space-y-1.5">
+                          <div className="flex justify-between text-[8px] font-black uppercase tracking-widest opacity-60">
+                             <span>Efficiency</span>
+                             <span>{person.stats.speed}/100</span>
+                          </div>
+                          <div className={`h-1.5 w-full rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}>
+                             <div className="h-full bg-purple-500 transition-all duration-1000 group-hover:w-[${person.stats.speed}%]" style={{ width: `${person.stats.speed}%` }} />
+                          </div>
+                       </div>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button className={`flex-1 py-4 rounded-lg flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest transition-all ${isDark ? 'bg-[#1bd2a4] text-black hover:shadow-[0_0_20px_rgba(27,210,164,0.3)]' : 'bg-slate-900 text-white hover:bg-black'}`}>
+                        View Details <ArrowRight size={14} />
+                      </button>
+                      <button className={`w-14 h-14 rounded-lg flex items-center justify-center border transition-all ${isDark ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+                        <Activity size={18} className={themeText} />
+                      </button>
+                    </div>
                   </div>
-                  <div className={`flex items-center justify-between pt-6 border-t ${isDark ? 'border-white/5' : 'border-slate-100'}`}>
-                    <div><span className="block text-[9px] font-black opacity-40">XP</span><span className="font-bold">{person.xp}</span></div>
-                    <div className="text-right"><span className="block text-[9px] font-black opacity-40">Rate</span><span className={`font-bold ${themeText}`}>{person.rate}</span></div>
-                  </div>
-                  <button className={`w-full mt-8 py-4 rounded-xl border flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest ${isDark ? 'border-white/10 hover:bg-white/5' : 'border-slate-200 hover:bg-slate-50'}`}>
-                    View Profile <ExternalLink size={14} />
-                  </button>
                 </div>
               ))}
-              <div className={`flex-shrink-0 w-[320px] md:w-[380px] snap-center p-1 rounded-[2.5rem] ${themeBg}`}>
-                <div className="w-full h-full p-8 rounded-[2.3rem] flex flex-col items-center justify-center text-center gap-6 cursor-pointer hover:bg-white/5 transition-colors">
-                  <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><Users size={40} className="text-white" /></div>
+              
+              <div className={`flex-shrink-0 w-[340px] md:w-[400px] snap-center p-1 rounded-[1.5rem] ${themeBg}`}>
+                <div className="w-full h-full p-10 rounded-[1.3rem] flex flex-col items-center justify-center text-center gap-6 cursor-pointer hover:bg-white/5 transition-colors border border-white/20">
+                  <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm border-2 border-white/20 animate-pulse">
+                    <Layers size={48} className="text-white" />
+                  </div>
                   <div className="text-white">
-                    <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-2">Explore 1,000+</h3>
-                    <p className="text-sm font-bold opacity-80 mb-6">Verified Specialists Ready</p>
-                    <div className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-black text-[10px] uppercase">Browse All <ArrowRight size={14} /></div>
+                    <h3 className="text-4xl font-black uppercase italic tracking-tighter mb-2 leading-none">Talent Hub</h3>
+                    <p className="text-sm font-bold opacity-70 mb-8 max-w-[200px] mx-auto uppercase">Full Roster: 1,500+ Qualified Specialists</p>
+                    <div className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-lg font-black text-[11px] uppercase tracking-widest hover:scale-105 transition-transform shadow-2xl">
+                       VIEW ALL TALENTS <ArrowRight size={16} />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* PROJECT CATALOG */}
-            <div className={`flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory custom-scrollbar transition-all duration-700 ${activeSide === 'talent' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20 pointer-events-none absolute inset-0'}`}>
+            <div className={`flex overflow-x-auto gap-8 pb-12 snap-x snap-mandatory custom-scrollbar transition-all duration-700 ${activeSide === 'talent' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20 pointer-events-none absolute inset-0'}`}>
               {projectCatalog.map((proj, i) => (
-                <div key={i} className={`flex-shrink-0 w-[320px] md:w-[380px] snap-center p-8 rounded-[2.5rem] border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
+                <div key={i} className={`flex-shrink-0 w-[340px] md:w-[400px] snap-center p-10 rounded-[2.5rem] border transition-all duration-500 ${isDark ? 'bg-white/5 border-white/5 hover:bg-white/[0.08]' : 'bg-white border-slate-200 shadow-sm'}`}>
                   <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10">
-                    {proj.icon}
+                    <proj.Icon className={proj.iconColor} size={32} />
                   </div>
-                  <h4 className="text-2xl font-black italic uppercase tracking-tighter mb-2">{proj.name}</h4>
-                  <p className="text-[10px] font-black uppercase opacity-60 mb-6">{proj.type} Solution</p>
+                  <h4 className="text-3xl font-black italic uppercase tracking-tighter mb-2">{proj.name}</h4>
+                  <p className="text-[10px] font-black uppercase opacity-60 mb-8">{proj.type} Solution</p>
                   
-                  <div className="space-y-4 mb-8">
-                    <div className="flex justify-between text-[11px] font-bold">
+                  <div className="space-y-5 mb-10">
+                    <div className="flex justify-between text-xs font-bold">
                       <span className="opacity-50">Stack:</span>
                       <span>{proj.stack.join(', ')}</span>
                     </div>
-                    <div className="flex justify-between text-[11px] font-bold">
+                    <div className="flex justify-between text-xs font-bold">
                       <span className="opacity-50">Delivery:</span>
                       <span className={themeText}>{proj.timeline}</span>
                     </div>
                   </div>
 
-                  <button className={`w-full py-4 rounded-xl border flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest ${isDark ? 'border-white/10 hover:bg-white/5' : 'border-slate-200 hover:bg-slate-50'}`}>
+                  <button className={`w-full py-5 rounded-xl border flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest ${isDark ? 'border-white/10 hover:bg-white/5' : 'border-slate-200 hover:bg-slate-50'}`}>
                     Case Study <ArrowRight size={14} />
                   </button>
                 </div>
               ))}
-              <div className={`flex-shrink-0 w-[320px] md:w-[380px] snap-center p-1 rounded-[2.5rem] ${themeBg}`}>
-                <div className="w-full h-full p-8 rounded-[2.3rem] flex flex-col items-center justify-center text-center gap-6 cursor-pointer hover:bg-white/5 transition-colors">
-                  <div className="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm"><Rocket size={40} className="text-white" /></div>
-                  <div className="text-white">
-                    <h3 className="text-3xl font-black uppercase italic tracking-tighter mb-2">Build Yours</h3>
-                    <p className="text-sm font-bold opacity-80 mb-6">Expert Squads Ready to Ship</p>
-                    <div className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-black text-[10px] uppercase">Get a Quote <ArrowRight size={14} /></div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -456,7 +539,7 @@ const App = () => {
               {activeSide === 'client' ? 'AI Job Architect' : 'AI Project Architect'}
             </h2>
           </div>
-          <div className={`border rounded-2xl p-6 md:p-10 backdrop-blur-xl shadow-2xl transition-all duration-700 ${isDark ? 'bg-white/5 ' + themeBorder : 'bg-white border-slate-200 shadow-slate-200'}`}>
+          <div className={`border rounded-2xl p-6 md:p-10 backdrop-blur-xl shadow-2xl transition-all duration-700 ${isDark ? 'bg-white/5 border-[#1bd2a4]/30' : 'bg-white border-slate-200 shadow-slate-200'}`}>
             <p className={`mb-6 text-center text-sm font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               {activeSide === 'client' 
                 ? "Draft a world-class Job Description to attract elite talent instantly. ✨"
@@ -508,7 +591,6 @@ const App = () => {
             </div>
           ))}
         </div>
-        <div className={`absolute right-0 top-0 text-[10rem] font-black select-none pointer-events-none -mr-20 uppercase ${isDark ? 'opacity-[0.03]' : 'opacity-[0.02]'}`}>SYSTEMS</div>
       </section>
 
       {/* Screening Section */}
@@ -612,63 +694,6 @@ const App = () => {
         </div>
       </section>
 
-      {/* CONSULTATION SECTION */}
-      <section className={`py-24 px-6 relative z-10 border-y ${isDark ? 'bg-black border-white/5' : 'bg-slate-50 border-slate-200'}`}>
-        <div className="max-w-5xl mx-auto">
-          <div className={`flex flex-col md:flex-row items-center justify-between gap-12 p-8 md:p-16 rounded-[3rem] border overflow-hidden relative group transition-colors duration-500 ${isDark ? 'bg-[#0a0a0c] border-white/10' : 'bg-white border-slate-200 shadow-xl shadow-slate-200/50'}`}>
-            <div className={`absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-10 transition-colors duration-700 ${themeBg}`} />
-            
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-6">
-                <HelpCircle className={themeText} size={24} />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Still Deciding?</span>
-              </div>
-              <h2 className={`text-4xl md:text-6xl font-black uppercase italic mb-4 leading-[0.9] ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Not Sure <br />Where to <span className={themeText}>Start?</span>
-              </h2>
-              <p className={`text-lg font-medium max-w-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                Speak with our strategy team to determine the best model for your unique business goals.
-              </p>
-            </div>
-
-            <div className="relative z-10 w-full md:w-auto">
-              <a 
-                href="#" 
-                className={`flex items-center justify-center gap-4 px-10 py-3 rounded-sm font-black text-lg uppercase italic transition-all shadow-2xl hover:scale-105 active:scale-95 ${themeBg} ${activeSide === 'client' && isDark ? 'text-black' : 'text-white'}`}
-              >
-                <CalendarDays size={68} />
-                BOOK A FREE CONSULTATION
-                <ArrowRight size={20} />
-              </a>
-              <p className="text-center md:text-left text-[9px] uppercase tracking-widest text-slate-600 mt-4 font-black">
-                15-Minute Strategy Session • No Obligation
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Freelancer Network CTA Section */}
-      <section className="relative py-32 px-6 overflow-hidden">
-        <div className={`absolute inset-0 opacity-10 transition-colors duration-700 ${themeBg}`} style={{ clipPath: 'polygon(0 15%, 100% 0, 100% 85%, 0 100%)' }}></div>
-        <div className="max-w-5xl mx-auto relative z-10 text-center">
-          <div className={`inline-flex items-center justify-center p-4 rounded-full border mb-8 ${isDark ? 'bg-white/5 border-white/10' : 'bg-white border-slate-200 shadow-sm'}`}>
-            <button className="w-10 h-10 flex items-center justify-center">
-              <Award className={themeText} size={40} />
-            </button>
-          </div>
-          <h2 className={`text-5xl md:text-7xl font-black uppercase italic mb-6 tracking-tighter leading-none ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Are you part of the <span className={themeText}>Top 3%?</span>
-          </h2>
-          <p className={`text-xl md:text-2xl mb-12 max-w-2xl mx-auto font-medium leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-            Join our elite network and work with world-class companies on meaningful, high-impact projects.
-          </p>
-          <button className={`group flex items-center gap-6 mx-auto px-12 py-6 rounded-sm font-black text-lg uppercase italic transition-all transform hover:scale-105 shadow-xl ${themeBg} ${activeSide === 'client' && isDark ? 'text-black' : 'text-white'}`}>
-            APPLY AS FREELANCER
-            <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
-          </button>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className={`py-20 px-6 border-t transition-colors duration-500 ${isDark ? 'bg-black border-white/5' : 'bg-white border-slate-200'}`}>
@@ -676,29 +701,17 @@ const App = () => {
           <div className="max-w-sm">
             <JDILogo side={activeSide} />
             <p className="text-slate-500 mt-6 mb-8 leading-relaxed font-medium">
-              The platform bridging the gap between high-stakes tech needs and world-class freelance talent. Built for speed, scale, and strategic success.
+              The platform bridging the gap between high-stakes tech needs and world-class freelance talent.
             </p>
-            <div className="flex gap-4">
-               <div className="w-3 h-3 rounded-full bg-[#1bd2a4] animate-pulse" />
-               <div className="w-3 h-3 rounded-full bg-blue-600 animate-pulse delay-75" />
-            </div>
           </div>
-          
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-[10px] uppercase font-black tracking-[0.3em]">
             <div className="flex flex-col gap-5 text-slate-500">
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Hire</span>
-              <a href="#" className={`transition-colors ${isDark ? 'hover:text-[#1bd2a4]' : 'hover:text-[#0f8b6b]'}`}>Project Audit</a>
-              <a href="#" className={`transition-colors ${isDark ? 'hover:text-[#1bd2a4]' : 'hover:text-[#0f8b6b]'}`}>Pricing</a>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Pricing</a>
             </div>
             <div className="flex flex-col gap-5 text-slate-500">
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Build</span>
-              <a href="#" className="hover:text-blue-600 transition-colors">Talent Network</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Remote Roles</a>
-            </div>
-            <div className="flex flex-col gap-5 text-slate-500">
-              <span className={isDark ? 'text-white' : 'text-slate-900'}>Social</span>
-              <a href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-slate-900'}`}>LinkedIn</a>
-              <a href="#" className={`transition-colors ${isDark ? 'hover:text-white' : 'hover:text-slate-900'}`}>Contact</a>
+              <a href="#" className="hover:text-blue-600 transition-colors">Network</a>
             </div>
           </div>
         </div>
@@ -714,9 +727,16 @@ const App = () => {
         .animate-spin-slow { animation: spin-slow 15s linear infinite; }
         @keyframes marquee-fast { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee-fast { animation: marquee-fast 15s linear infinite; }
-        .pause { animation-play-state: paused !important; }
         
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        @keyframes scan {
+          0% { top: 0%; opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { top: 100%; opacity: 0; }
+        }
+        .animate-scan { animation: scan 2s linear infinite; }
+        
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { 
           background: ${isDark ? '#334155' : '#cbd5e1'}; 
           border-radius: 10px; 
