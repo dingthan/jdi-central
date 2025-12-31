@@ -25,8 +25,9 @@ import {
 } from 'lucide-react';
 
 /**
- * JDI Central - Color Adaptive Edition
- * Fully responsive landing page with dynamic theme switching and AI generation capabilities.
+ * JDI Central - Color Adaptive Edition (Color Swap Update)
+ * "Hire Precision" -> Emerald Green (#1bd2a4)
+ * "Build the Future" -> Electric Blue (#3b82f6)
  */
 
 const apiKey = ""; 
@@ -145,6 +146,13 @@ const App = () => {
     { role: "Marketing Experts", icon: <BarChart3 size={20} /> },
   ];
 
+  // SWAPPED LOGIC: client -> Emerald Green, talent -> Electric Blue
+  const themeMain = activeSide === 'client' ? '#1bd2a4' : '#3b82f6';
+  const themeBg = activeSide === 'client' ? 'bg-[#1bd2a4]' : 'bg-blue-600';
+  const themeText = activeSide === 'client' ? 'text-[#1bd2a4]' : 'text-blue-500';
+  const themeBorder = activeSide === 'client' ? 'border-[#1bd2a4]/30' : 'border-blue-500/30';
+  const themeGlow = activeSide === 'client' ? 'shadow-[0_0_50px_-12px_rgba(27,210,164,0.5)]' : 'shadow-[0_0_50px_-12px_rgba(59,130,246,0.5)]';
+
   const JDILogo = ({ side }) => (
     <div className="flex items-center gap-3 group cursor-pointer">
       <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
@@ -155,7 +163,7 @@ const App = () => {
             stroke="currentColor" 
             strokeWidth="2" 
             strokeDasharray="10 15"
-            className={side === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}
+            className={side === 'client' ? 'text-[#1bd2a4]' : 'text-blue-500'}
           />
           <circle 
             cx="50" cy="50" r="45" 
@@ -164,29 +172,24 @@ const App = () => {
             strokeWidth="6" 
             strokeDasharray="1 98" 
             strokeLinecap="round"
-            className={side === 'client' ? 'text-blue-400' : 'text-[#1bd2a4]/80'}
+            className={side === 'client' ? 'text-[#1bd2a4]/80' : 'text-blue-400'}
           />
         </svg>
-        <div className={`w-6 h-6 md:w-7 md:h-7 flex items-center justify-center font-black text-[10px] md:text-xs italic rounded-sm transform transition-transform group-hover:scale-110 ${side === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'} text-white`}>
+        <div className={`w-6 h-6 md:w-7 md:h-7 flex items-center justify-center font-black text-[10px] md:text-xs italic rounded-sm transform transition-transform group-hover:scale-110 ${side === 'client' ? 'bg-[#1bd2a4]' : 'bg-blue-600'} text-white`}>
           JDI
         </div>
       </div>
       <div className="text-lg md:text-xl font-black tracking-tighter uppercase italic leading-none">
-        Central<span className={side === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}>.</span>
+        Central<span className={side === 'client' ? 'text-[#1bd2a4]' : 'text-blue-500'}>.</span>
       </div>
     </div>
   );
-
-  const themeBg = activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]';
-  const themeText = activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]';
-  const themeBorder = activeSide === 'client' ? 'border-blue-500/30' : 'border-[#1bd2a4]/30';
-  const themeGlow = activeSide === 'client' ? 'shadow-[0_0_50px_-12px_rgba(59,130,246,0.5)]' : 'shadow-[0_0_50px_-12px_rgba(27,210,164,0.5)]';
 
   return (
     <div className="min-h-screen bg-[#020203] text-white font-sans selection:bg-blue-500 selection:text-white overflow-x-hidden">
       {/* Background Grid */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.05]" 
-           style={{ backgroundImage: 'linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+           style={{ backgroundImage: `linear-gradient(${themeMain} 1px, transparent 1px), linear-gradient(90deg, ${themeMain} 1px, transparent 1px)`, backgroundSize: '60px 60px' }} />
       
       {/* Dynamic Ambient Glow */}
       <div 
@@ -194,7 +197,7 @@ const App = () => {
         style={{
           width: '1000px',
           height: '1000px',
-          background: activeSide === 'client' ? 'radial-gradient(circle, #2563eb 0%, transparent 70%)' : 'radial-gradient(circle, #1bd2a4 0%, transparent 70%)',
+          background: activeSide === 'client' ? 'radial-gradient(circle, #1bd2a4 0%, transparent 70%)' : 'radial-gradient(circle, #2563eb 0%, transparent 70%)',
           left: activeSide === 'client' ? '30%' : '70%',
           top: '30%',
           transform: `translate(-50%, -50%) translate(${scrollY * 0.05}px, ${scrollY * 0.02}px)`,
@@ -211,7 +214,7 @@ const App = () => {
           <a href="#" className="hover:text-blue-400 transition-colors">Case Studies</a>
           <a href="#" className="text-slate-500 hover:text-white transition-colors">Client Login</a>
         </div>
-        <button className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-500 shadow-xl ${activeSide === 'client' ? 'bg-blue-600 text-white' : 'bg-[#1bd2a4] text-black'}`}>
+        <button className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-500 shadow-xl ${themeBg} ${activeSide === 'client' ? 'text-black' : 'text-white'}`}>
           Hire Top 3%
         </button>
       </nav>
@@ -219,34 +222,37 @@ const App = () => {
       {/* Hero Section */}
       <section className="relative pt-32 min-h-[90vh] flex flex-col justify-center px-6 z-10">
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-6 relative">
+          
+          {/* Hire Precision - NOW EMERALD */}
           <div 
             onMouseEnter={() => { setActiveSide('client'); setAiResult(null); }} 
-            className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'client' ? 'bg-blue-600/5 border-blue-500/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
+            className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'client' ? 'bg-[#1bd2a4]/5 border-[#1bd2a4]/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
           >
-            <div className="mb-6 inline-flex items-center gap-2 px-4 py-1 rounded-full border border-blue-500/50 text-blue-400 text-[10px] font-bold tracking-widest uppercase bg-blue-500/10">
+            <div className="mb-6 inline-flex items-center gap-2 px-4 py-1 rounded-full border border-[#1bd2a4]/50 text-[#1bd2a4] text-[10px] font-bold tracking-widest uppercase bg-[#1bd2a4]/10">
               <Star size={14} fill="currentColor" /> World-Class Talent
             </div>
             <h1 className="text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6">
-              Hire <br /><span className="text-transparent stroke-blue">Precision.</span>
+              Hire <br /><span className="text-transparent stroke-green">Precision.</span>
             </h1>
             <p className="text-lg text-slate-400 mb-8 max-w-sm font-medium">Access individual elite software engineers and designers.</p>
-            <button className="flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-sm font-black transition-all italic group">
+            <button className="flex items-center gap-4 bg-[#1bd2a4] hover:bg-[#18b88f] text-black px-8 py-4 rounded-sm font-black transition-all italic group">
               HIRE TOP TALENT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
 
+          {/* Build the Future - NOW BLUE */}
           <div 
             onMouseEnter={() => { setActiveSide('talent'); setAiResult(null); }} 
-            className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'talent' ? 'bg-[#1bd2a4]/5 border-[#1bd2a4]/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
+            className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'talent' ? 'bg-blue-600/5 border-blue-500/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
           >
-            <div className="mb-6 inline-flex items-center gap-2 px-4 py-1 rounded-full border border-[#1bd2a4]/50 text-[#1bd2a4] text-[10px] font-bold tracking-widest uppercase bg-[#1bd2a4]/10">
+            <div className="mb-6 inline-flex items-center gap-2 px-4 py-1 rounded-full border border-blue-500/50 text-blue-400 text-[10px] font-bold tracking-widest uppercase bg-blue-500/10">
               <Zap size={14} fill="currentColor" /> Full Solutions
             </div>
             <h1 className="text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6">
-              Build <br /><span className="text-transparent stroke-green">The Future.</span>
+              Build <br /><span className="text-transparent stroke-blue">The Future.</span>
             </h1>
             <p className="text-lg text-slate-400 mb-8 max-w-sm font-medium">Deploy a dedicated JDI squad to ship mission-critical products.</p>
-            <button className="flex items-center gap-4 bg-[#1bd2a4] hover:bg-[#18b88f] text-black font-black px-8 py-4 rounded-sm transition-all italic group">
+            <button className="flex items-center gap-4 bg-blue-600 hover:bg-blue-500 text-white font-black px-8 py-4 rounded-sm transition-all italic group">
               START A PROJECT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
@@ -266,20 +272,20 @@ const App = () => {
         </div>
       </section>
 
-      {/* DYNAMIC AI SECTION: Context changes based on Hero Hover */}
+      {/* DYNAMIC AI SECTION */}
       <section className="relative py-24 px-6 z-10 border-b border-white/5 bg-[#050507]">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-8 transition-all duration-500">
             {activeSide === 'client' ? (
-              <FileText className="text-blue-500 animate-pulse" size={28} />
+              <FileText className="text-[#1bd2a4] animate-pulse" size={28} />
             ) : (
-              <Sparkles className="text-[#1bd2a4] animate-pulse" size={28} />
+              <Sparkles className="text-blue-500 animate-pulse" size={28} />
             )}
             <h2 className="text-2xl font-black uppercase italic tracking-tighter text-center">
               {activeSide === 'client' ? 'AI Job Architect' : 'AI Project Architect'}
             </h2>
           </div>
-          <div className={`bg-white/5 border rounded-2xl p-6 md:p-10 backdrop-blur-xl shadow-2xl transition-all duration-700 ${activeSide === 'client' ? 'border-blue-500/30' : 'border-[#1bd2a4]/30'}`}>
+          <div className={`bg-white/5 border rounded-2xl p-6 md:p-10 backdrop-blur-xl shadow-2xl transition-all duration-700 ${themeBorder}`}>
             <p className="text-slate-400 mb-6 text-center text-sm font-medium">
               {activeSide === 'client' 
                 ? "Draft a world-class Job Description to attract elite talent instantly. ✨"
@@ -292,7 +298,7 @@ const App = () => {
                   onChange={(e) => setUserInput(e.target.value)} 
                   onKeyPress={(e) => e.key === 'Enter' && handleAiConsult()}
                   placeholder={activeSide === 'client' ? "e.g., Senior Full Stack Engineer (Rust/React)" : "What are you building?"} 
-                  className="w-full bg-black/50 border border-white/10 rounded-lg pl-12 pr-6 py-4 focus:outline-none focus:border-blue-500 text-white placeholder:text-slate-600 transition-all" 
+                  className={`w-full bg-black/50 border border-white/10 rounded-lg pl-12 pr-6 py-4 focus:outline-none text-white placeholder:text-slate-600 transition-all ${activeSide === 'client' ? 'focus:border-[#1bd2a4]' : 'focus:border-blue-500'}`} 
                 />
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                   {activeSide === 'client' ? <Search size={18} /> : <Terminal size={18} />}
@@ -301,7 +307,7 @@ const App = () => {
               <button 
                 onClick={handleAiConsult} 
                 disabled={aiLoading} 
-                className={`px-8 py-4 rounded-lg font-black italic transition-all disabled:opacity-50 min-w-[220px] shadow-lg hover:shadow-xl ${activeSide === 'client' ? 'bg-blue-600 hover:bg-blue-500' : 'bg-[#1bd2a4] text-black hover:bg-[#18b88f]'}`}
+                className={`px-8 py-4 rounded-lg font-black italic transition-all disabled:opacity-50 min-w-[220px] shadow-lg hover:shadow-xl ${themeBg} ${activeSide === 'client' ? 'text-black hover:bg-[#18b88f]' : 'text-white hover:bg-blue-500'}`}
               >
                 {aiLoading ? <Loader2 className="animate-spin mx-auto" /> : (activeSide === 'client' ? "GENERATE DESCRIPTION" : "DRAFT BLUEPRINT")}
               </button>
@@ -312,7 +318,7 @@ const App = () => {
             {aiResult && (
               <div className="p-8 rounded-lg bg-white/5 border border-white/10 animate-in fade-in slide-in-from-bottom-4 duration-700 max-h-[500px] overflow-y-auto custom-scrollbar">
                 <div className="flex items-start gap-4">
-                  <MessageSquare className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} />
+                  <MessageSquare className={themeText} />
                   <div className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap font-medium">
                     {aiResult}
                   </div>
@@ -322,7 +328,6 @@ const App = () => {
           </div>
         </div>
       </section>
-
 
       {/* Stats Section */}
       <section className="py-24 bg-white text-black relative z-10">
@@ -352,44 +357,36 @@ const App = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-6">
-            <div className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 transition-all duration-700 hover:${themeBorder}`}>
-              <Users size={32} className={`mb-6 transition-colors duration-700 ${themeText}`} />
-              <h4 className="font-black uppercase italic mb-2">Build Teams</h4>
-              <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Scale with pre-vetted seniors.</p>
-            </div>
-            <div className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 transition-all duration-700 hover:${themeBorder}`}>
-              <Terminal size={32} className={`mb-6 transition-colors duration-700 ${themeText}`} />
-              <h4 className="font-black uppercase italic mb-2">Tech Depth</h4>
-              <p className="text-[10px] text-slate-500 uppercase tracking-tighter">AI, Fintech, Web Specialists.</p>
-            </div>
-            <div className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 transition-all duration-700 hover:${themeBorder}`}>
-              <ShieldCheck size={32} className={`mb-6 transition-colors duration-700 ${themeText}`} />
-              <h4 className="font-black uppercase italic mb-2">Zero Risk</h4>
-              <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Trial periods ensure fit.</p>
-            </div>
-            <div className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 transition-all duration-700 hover:${themeBorder}`}>
-              <Globe size={32} className={`mb-6 transition-colors duration-700 ${themeText}`} />
-              <h4 className="font-black uppercase italic mb-2">Global Reach</h4>
-              <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Borderless expertise.</p>
-            </div>
+            {[
+              { icon: <Users size={32} />, title: "Build Teams", desc: "Scale with pre-vetted seniors." },
+              { icon: <Terminal size={32} />, title: "Tech Depth", desc: "AI, Fintech, Web Specialists.", offset: true },
+              { icon: <ShieldCheck size={32} />, title: "Zero Risk", desc: "Trial periods ensure fit." },
+              { icon: <Globe size={32} />, title: "Global Reach", desc: "Borderless expertise.", offset: true }
+            ].map((card, idx) => (
+              <div key={idx} className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 transition-all duration-700 hover:${themeBorder} ${card.offset ? 'mt-12' : ''}`}>
+                <div className={`mb-6 transition-colors duration-700 ${themeText}`}>{card.icon}</div>
+                <h4 className="font-black uppercase italic mb-2">{card.title}</h4>
+                <p className="text-[10px] text-slate-500 uppercase tracking-tighter">{card.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Freelancer Network CTA Section */}
       <section className="relative py-32 px-6 overflow-hidden">
-        <div className={`absolute inset-0 opacity-10 transition-colors duration-700 ${activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'}`} style={{ clipPath: 'polygon(0 15%, 100% 0, 100% 85%, 0 100%)' }}></div>
+        <div className={`absolute inset-0 opacity-10 transition-colors duration-700 ${themeBg}`} style={{ clipPath: 'polygon(0 15%, 100% 0, 100% 85%, 0 100%)' }}></div>
         <div className="max-w-5xl mx-auto relative z-10 text-center">
           <div className="inline-flex items-center justify-center p-4 rounded-full bg-white/5 border border-white/10 mb-8">
-            <Award className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} size={40} />
+            <Award className={themeText} size={40} />
           </div>
           <h2 className="text-5xl md:text-7xl font-black uppercase italic mb-6 tracking-tighter leading-none">
-            Are you part of the <span className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}>Top 3%?</span>
+            Are you part of the <span className={themeText}>Top 3%?</span>
           </h2>
           <p className="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
             Join our elite network and work with world-class companies on meaningful, high-impact projects.
           </p>
-          <button className={`group flex items-center gap-6 mx-auto px-12 py-6 rounded-sm font-black text-lg uppercase italic transition-all transform hover:scale-105 ${activeSide === 'client' ? 'bg-blue-600 text-white' : 'bg-[#1bd2a4] text-black'}`}>
+          <button className={`group flex items-center gap-6 mx-auto px-12 py-6 rounded-sm font-black text-lg uppercase italic transition-all transform hover:scale-105 ${themeBg} ${activeSide === 'client' ? 'text-black' : 'text-white'}`}>
             APPLY AS FREELANCER
             <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
           </button>
@@ -397,10 +394,39 @@ const App = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-20 border-t border-white/5 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <JDILogo side={activeSide} />
-          <div className="text-[10px] text-slate-600 uppercase font-bold tracking-tighter">© 2025 JDI CENTRAL. ALL RIGHTS RESERVED.</div>
+      <footer className="bg-black py-20 px-6 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+          <div className="max-w-sm">
+            <JDILogo side={activeSide} />
+            <p className="text-slate-500 mt-6 mb-8 leading-relaxed font-medium">
+              The platform bridging the gap between high-stakes tech needs and world-class freelance talent. Built for speed, scale, and strange success.
+            </p>
+            <div className="flex gap-4">
+               <div className="w-3 h-3 rounded-full bg-[#1bd2a4] animate-pulse" />
+               <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse delay-75" />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-[10px] uppercase font-black tracking-[0.3em]">
+            <div className="flex flex-col gap-5 text-slate-500">
+              <span className="text-white mb-2">Hire</span>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Project Audit</a>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Squad Search</a>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Pricing</a>
+            </div>
+            <div className="flex flex-col gap-5 text-slate-500">
+              <span className="text-white mb-2">Build</span>
+              <a href="#" className="hover:text-blue-500 transition-colors">Talent Network</a>
+              <a href="#" className="hover:text-blue-500 transition-colors">Career Path</a>
+              <a href="#" className="hover:text-blue-500 transition-colors">Remote Roles</a>
+            </div>
+            <div className="flex flex-col gap-5 text-slate-500">
+              <span className="text-white mb-2">Social</span>
+              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="#" className="hover:text-white transition-colors">Twitter</a>
+              <a href="#" className="hover:text-white transition-colors">Contact</a>
+            </div>
+          </div>
         </div>
       </footer>
 
@@ -412,6 +438,8 @@ const App = () => {
         @keyframes marquee-fast { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee-fast { animation: marquee-fast 15s linear infinite; }
         .pause { animation-play-state: paused !important; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
       `}} />
     </div>
   );
