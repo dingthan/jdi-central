@@ -21,7 +21,6 @@ import {
   Search
 } from 'lucide-react';
 
-
 /**
  * JDI Central - Reimagined
  * A premium landing page for elite technical talent and solutions.
@@ -160,37 +159,22 @@ const App = () => {
     { role: "Marketing Experts", icon: <BarChart3 size={20} /> },
   ];
 
-  // Custom Logo Component
-  const JDILogo = ({ side }) => (
+  const JDILogo = () => (
     <div className="flex items-center gap-3 group cursor-pointer">
-      <div className="relative w-12 h-12 flex items-center justify-center">
-        {/* Rotating Ecosystem Ring */}
+      <div className="relative w-10 h-10 flex items-center justify-center">
         <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full animate-spin-slow">
           <circle 
-            cx="50" cy="50" r="45" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeDasharray="10 15"
-            className={side === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}
-          />
-          <circle 
-            cx="50" cy="50" r="45" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="6" 
-            strokeDasharray="1 98" 
-            strokeLinecap="round"
-            className={side === 'client' ? 'text-blue-400' : 'text-[#1bd2a4]/80'}
+            cx="50" cy="50" r="45" fill="none" 
+            stroke="currentColor" strokeWidth="2" strokeDasharray="10 15" 
+            className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} 
           />
         </svg>
-        {/* Core Node */}
-        <div className={`w-7 h-7 flex items-center justify-center font-black text-xs italic rounded-sm transform transition-transform group-hover:scale-110 ${side === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'} text-white`}>
+        <div className={`w-6 h-6 flex items-center justify-center font-black text-[10px] italic rounded-sm transition-colors duration-500 ${activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'} text-white`}>
           JDI
         </div>
       </div>
-      <div className="text-xl font-black tracking-tighter uppercase italic leading-none">
-        Central<span className={side === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}>.</span>
+      <div className="text-lg font-black tracking-tighter uppercase italic leading-none text-white">
+        Central<span className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}>.</span>
       </div>
     </div>
   );
@@ -214,20 +198,18 @@ const App = () => {
           filter: 'blur(140px)'
         }}
       />
-      <nav className="fixed top-0 w-full z-50 mix-blend-difference px-6 py-6 flex justify-between items-center">
-        <JDILogo side={activeSide} />
-        
-        <div className="hidden md:flex space-x-12 font-medium uppercase text-[10px] tracking-[0.4em]">
-          <a href="#" className="hover:text-blue-400 transition-colors">Hire Talent</a>
-          <a href="#" className="hover:text-[#1bd2a4] transition-colors">Build Career</a>
-          <a href="#" className="hover:text-white/50 transition-colors">Network</a>
-        </div>
 
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`p-3 rounded-full hover:scale-110 transition-transform active:scale-95 ${activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'} text-white`}
-        >
-          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center border-b border-white/5 backdrop-blur-xl bg-black/20">
+        <JDILogo />
+        <div className="hidden md:flex space-x-10 font-bold uppercase text-[10px] tracking-[0.3em]">
+          <a href="#" className="hover:text-blue-400 transition-colors">Hire Talent</a>
+          <a href="#" className="hover:text-blue-400 transition-colors">Solutions</a>
+          <a href="#" className="hover:text-blue-400 transition-colors">Case Studies</a>
+          <a href="#" className="text-slate-500 hover:text-white transition-colors">Client Login</a>
+        </div>
+        <button className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-500 shadow-xl ${activeSide === 'client' ? 'bg-blue-600 text-white' : 'bg-[#1bd2a4] text-black'}`}>
+          Hire Top 3%
         </button>
       </nav>
 
