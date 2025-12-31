@@ -141,11 +141,11 @@ const App = () => {
   ];
 
   const featuredTalent = [
-    { name: "Alex M.", role: "Senior Full Stack", skills: ["Rust", "React"], xp: "10+ yrs", rate: "$110/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" },
-    { name: "Sarah K.", role: "Lead UI/UX", skills: ["Figma", "SaaS"], xp: "8 yrs", rate: "$95/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" },
-    { name: "David L.", role: "Blockchain Dev", skills: ["Solidity", "Go"], xp: "6 yrs", rate: "$140/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David" },
-    { name: "Elena R.", role: "DevOps Engineer", skills: ["K8s", "Terraform"], xp: "7 yrs", rate: "$125/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena" },
-    { name: "James W.", role: "Python/AI Specialist", skills: ["PyTorch", "LLMs"], xp: "5 yrs", rate: "$130/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James" }
+    { name: "Alex M.", role: "Senior Full Stack", skills: ["Rust", "React"], xp: "10+ yrs", rate: "$22/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" },
+    { name: "Sarah K.", role: "Lead UI/UX", skills: ["Figma", "SaaS"], xp: "8 yrs", rate: "$15/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" },
+    { name: "David L.", role: "Blockchain Dev", skills: ["Solidity", "Go"], xp: "6 yrs", rate: "$16/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David" },
+    { name: "Elena R.", role: "DevOps Engineer", skills: ["K8s", "Terraform"], xp: "7 yrs", rate: "$20/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena" },
+    { name: "James W.", role: "Python/AI Specialist", skills: ["PyTorch", "LLMs"], xp: "5 yrs", rate: "$18/hr", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=James" }
   ];
 
   const projectCatalog = [
@@ -634,7 +634,7 @@ const App = () => {
             <div className="relative z-10 w-full md:w-auto">
               <a 
                 href="#" 
-                className={`flex items-center justify-center gap-4 px-10 py-6 rounded-sm font-black text-lg uppercase italic transition-all shadow-2xl hover:scale-105 active:scale-95 ${themeBg} ${activeSide === 'client' && isDark ? 'text-black' : 'text-white'}`}
+                className={`flex items-center justify-center gap-4 px-10 py-3 rounded-sm font-black text-lg uppercase italic transition-all shadow-2xl hover:scale-105 active:scale-95 ${themeBg} ${activeSide === 'client' && isDark ? 'text-black' : 'text-white'}`}
               >
                 <CalendarDays size={68} />
                 BOOK A FREE CONSULTATION
