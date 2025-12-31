@@ -35,15 +35,17 @@ import {
   Layers,
   Crosshair,
   TrendingUp,
-  Target
+  Target,
+  Settings,
+  Key,
+  AlertCircle
 } from 'lucide-react';
 
 /**
  * JDI Central - Corrected Version
- * Fixes: Crosshair reference error and React child object error
+ * Fixes: ReferenceError for setShowKeyModal and API Key persistence
  */
 
-const apiKey = ""; 
 const GEMINI_MODEL = "gemini-2.5-flash-preview-09-2025";
 
 const App = () => {
@@ -51,10 +53,13 @@ const App = () => {
   const [activeSide, setActiveSide] = useState('client'); 
   const [theme, setTheme] = useState('dark'); 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showKeyModal, setShowKeyModal] = useState(false);
   
   const marqueeRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
-
+  
+  // API Key Management for GitHub/External Hosting
+  const [apiKey, setApiKey] = useState(localStorage.getItem('jdi_gemini_key') || "");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState(null);
   const [userInput, setUserInput] = useState("");
@@ -68,7 +73,17 @@ const App = () => {
 
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
+  const saveApiKey = (key) => {
+    localStorage.setItem('jdi_gemini_key', key);
+    setApiKey(key);
+    setShowKeyModal(false);
+  };
+
   const callGemini = async (prompt, systemPrompt) => {
+    if (!apiKey) {
+      setShowKeyModal(true);
+      return;
+    }
     setAiLoading(true);
     setError(null);
     setAiResult(null);
@@ -85,6 +100,9 @@ const App = () => {
         });
 
         if (!response.ok) {
+          if (response.status === 403 || response.status === 401) {
+            throw new Error('Invalid API Key. Please check your settings.');
+          }
           if ((response.status === 429 || response.status >= 500) && retries < 5) {
             const delay = Math.pow(2, retries) * 1000;
             await new Promise(resolve => setTimeout(resolve, delay));
@@ -96,7 +114,7 @@ const App = () => {
         const data = await response.json();
         return data.candidates?.[0]?.content?.parts?.[0]?.text;
       } catch (err) {
-        if (retries < 5) {
+        if (retries < 5 && !err.message.includes('Key')) {
           const delay = Math.pow(2, retries) * 1000;
           await new Promise(resolve => setTimeout(resolve, delay));
           return fetchWithRetry(retries + 1);
@@ -109,7 +127,7 @@ const App = () => {
       const result = await fetchWithRetry();
       setAiResult(result);
     } catch (err) {
-      setError("The AI Engine is currently at capacity. Please try again in a moment.");
+      setError(err.message || "The AI Engine is currently at capacity. Please try again in a moment.");
     } finally {
       setAiLoading(false);
     }
@@ -135,7 +153,6 @@ const App = () => {
     { label: 'Match Time', value: '< 48h', sub: 'Speed to Hire' },
   ];
 
-  // Store Icon components as references to avoid child object rendering errors
   const skillsets = [
     { role: "Developers", Icon: Cpu },
     { role: "Designers", Icon: Palette },
@@ -290,6 +307,42 @@ const App = () => {
         }}
       />
 
+      {/* API Key Modal */}
+      {showKeyModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+          <div className={`w-full max-w-md p-8 rounded-[2rem] border ${isDark ? 'bg-[#0a0a0c] border-white/10' : 'bg-white border-slate-200'}`}>
+            <div className="flex items-center gap-3 mb-6">
+              <Key className={themeText} />
+              <h3 className="text-xl font-black uppercase italic italic">API Configuration</h3>
+            </div>
+            <p className="text-sm opacity-60 mb-6 leading-relaxed">
+              To use AI features on GitHub, you need a Google Gemini API Key. Your key is stored locally in your browser.
+            </p>
+            <input 
+              type="password"
+              placeholder="Paste your Gemini API Key here..."
+              className={`w-full p-4 rounded-xl mb-6 outline-none border transition-all ${isDark ? 'bg-black border-white/10 focus:border-blue-500' : 'bg-slate-50 border-slate-200 focus:border-blue-600'}`}
+              onKeyDown={(e) => { if(e.key === 'Enter') saveApiKey(e.target.value); }}
+              defaultValue={apiKey}
+            />
+            <div className="flex gap-3">
+              <button 
+                onClick={() => setShowKeyModal(false)}
+                className="flex-1 py-4 rounded-xl font-bold uppercase text-[10px] tracking-widest bg-white/5 hover:bg-white/10 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => saveApiKey(document.querySelector('input[type="password"]').value)}
+                className={`flex-1 py-4 rounded-xl font-black uppercase text-[10px] tracking-widest text-white ${themeBg}`}
+              >
+                Save & Connect
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center transition-all duration-500 ${scrollY > 50 ? (isDark ? 'bg-black/60 backdrop-blur-xl py-4' : 'bg-white/80 backdrop-blur-xl py-4') : 'bg-transparent'}`}>
         <JDILogo side={activeSide}/>
@@ -300,13 +353,18 @@ const App = () => {
           <a href="#" className={`transition-colors ${isDark ? 'text-white/70 hover:text-white' : 'text-slate-600 hover:text-blue-600'}`}>Case Studies</a>
           <a href="#" className={`transition-colors ${isDark ? 'text-slate-500 hover:text-white' : 'text-slate-500 hover:text-blue-600'}`}>Client Login</a>
           <div className={`w-[1px] h-4 ${isDark ? 'bg-white/10' : 'bg-slate-300'}`} />
-          <button 
-            onClick={toggleTheme}
-            className={`flex items-center gap-2 px-3 py-1 rounded-full border transition-all ${isDark ? 'border-white/10 hover:bg-white/5' : 'border-slate-300 hover:bg-slate-100'}`}
-          >
-            {isDark ? <Sun size={14} className="text-yellow-400" /> : <Moon size={14} className="text-blue-600" />}
-            <span className="text-[9px] font-black">{isDark ? 'LIGHT' : 'DARK'}</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <button onClick={() => setShowKeyModal(true)} className={`p-1.5 rounded-full transition-colors ${isDark ? 'hover:bg-white/10 text-white/50' : 'hover:bg-slate-100 text-slate-400'}`}>
+              <Settings size={16} />
+            </button>
+            <button 
+              onClick={toggleTheme}
+              className={`flex items-center gap-2 px-3 py-1 rounded-full border transition-all ${isDark ? 'border-white/10 hover:bg-white/5' : 'border-slate-300 hover:bg-slate-100'}`}
+            >
+              {isDark ? <Sun size={14} className="text-yellow-400" /> : <Moon size={14} className="text-blue-600" />}
+              <span className="text-[9px] font-black">{isDark ? 'LIGHT' : 'DARK'}</span>
+            </button>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
@@ -322,6 +380,7 @@ const App = () => {
           </button>
         </div>
       </nav>
+
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className={`fixed inset-0 z-[60] lg:hidden p-6 transition-all duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
@@ -334,6 +393,9 @@ const App = () => {
             <a href="#" onClick={() => setIsMenuOpen(false)}>Solutions</a>
             <a href="#" onClick={() => setIsMenuOpen(false)}>Case Studies</a>
             <a href="#" onClick={() => setIsMenuOpen(false)}>Client Login</a>
+            <button onClick={() => { setShowKeyModal(true); setIsMenuOpen(false); }} className="text-left flex items-center gap-4">
+              <Settings /> Settings
+            </button>
             <button 
               onClick={() => { toggleTheme(); setIsMenuOpen(false); }}
               className="text-left flex items-center gap-4"
@@ -588,6 +650,12 @@ const App = () => {
               </button>
             </div>
             
+            {error && (
+              <div className="p-4 mb-6 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2">
+                <AlertCircle size={14} /> {error}
+              </div>
+            )}
+            
             {aiResult && (
               <div className={`p-8 rounded-lg border animate-in fade-in slide-in-from-bottom-4 duration-700 max-h-[500px] overflow-y-auto custom-scrollbar ${isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'}`}>
                 <div className="flex items-start gap-4">
@@ -608,7 +676,6 @@ const App = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {statsList.map((s, i) => (
               <div key={i} className="group relative">
-                {/* Decorative Elements */}
                 <div className={`absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 transition-all duration-500 ${isDark ? 'border-slate-200 group-hover:border-black' : 'border-slate-800 group-hover:border-white'}`} />
                 <div className={`absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 transition-all duration-500 ${isDark ? 'border-slate-200 group-hover:border-black' : 'border-slate-800 group-hover:border-white'}`} />
                 
@@ -624,15 +691,12 @@ const App = () => {
                       {s.sub}
                     </div>
                   </div>
-                  
-                  {/* Glowing line on hover */}
                   <div className={`mt-6 h-1 w-0 group-hover:w-full transition-all duration-700 ${themeBg}`} />
                 </div>
               </div>
             ))}
           </div>
           
-          {/* Bottom Bar for Stats Context */}
           <div className={`mt-20 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-6 ${isDark ? 'border-slate-200' : 'border-white/10'}`}>
             <div className="flex items-center gap-4">
               <div className={`w-3 h-3 rounded-full animate-ping ${themeBg}`} />
@@ -747,6 +811,7 @@ const App = () => {
           </div>
         </div>
       </section>
+      
       {/* CONSULTATION SECTION */}
       <section className={`py-24 px-6 relative z-10 border-y ${isDark ? 'bg-black border-white/5' : 'bg-slate-50 border-slate-200'}`}>
         <div className="max-w-5xl mx-auto">
