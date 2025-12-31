@@ -129,10 +129,10 @@ const App = () => {
   };
 
   const statsList = [
-    { label: 'Verified Talents', value: '1,500+' },
-    { label: 'Client Retention', value: '97%' },
-    { label: 'Global Availability', value: '24/7' },
-    { label: 'Time to Hire', value: '< 48h' },
+    { label: 'Verified Talents', value: '1,500+', sub: 'Top 3% Global' },
+    { label: 'Client Retention', value: '97%', sub: 'High Stability' },
+    { label: 'Global Reach', value: '24/7', sub: 'Always Online' },
+    { label: 'Match Time', value: '< 48h', sub: 'Speed to Hire' },
   ];
 
   // Store Icon components as references to avoid child object rendering errors
@@ -322,7 +322,7 @@ const App = () => {
           </button>
         </div>
       </nav>
- {/* Mobile Menu */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className={`fixed inset-0 z-[60] lg:hidden p-6 transition-all duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
           <div className="flex justify-between items-center mb-16">
@@ -602,15 +602,48 @@ const App = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className={`py-24 relative z-10 ${isDark ? 'bg-white text-black' : 'bg-slate-900 text-white'}`}>
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left">
-          {statsList.map((s, i) => (
-            <div key={i}>
-              <div className="text-4xl md:text-6xl font-black italic mb-2 tracking-tighter">{s.value}</div>
-              <div className={`text-[10px] font-black uppercase tracking-[0.3em] ${isDark ? 'opacity-50' : 'opacity-40'}`}>{s.label}</div>
+      {/* Re-Styled Stats Section */}
+      <section className={`py-32 relative z-10 transition-colors duration-1000 ${isDark ? 'bg-white' : 'bg-[#0a0a0c]'}`}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {statsList.map((s, i) => (
+              <div key={i} className="group relative">
+                {/* Decorative Elements */}
+                <div className={`absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 transition-all duration-500 ${isDark ? 'border-slate-200 group-hover:border-black' : 'border-slate-800 group-hover:border-white'}`} />
+                <div className={`absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 transition-all duration-500 ${isDark ? 'border-slate-200 group-hover:border-black' : 'border-slate-800 group-hover:border-white'}`} />
+                
+                <div className={`p-10 transition-all duration-500 transform group-hover:-translate-y-2 ${isDark ? 'hover:bg-slate-50' : 'hover:bg-white/5'}`}>
+                  <div className={`text-6xl font-black italic mb-3 tracking-tighter transition-colors duration-500 ${isDark ? 'text-black' : 'text-white'}`}>
+                    {s.value}
+                  </div>
+                  <div className="space-y-1">
+                    <div className={`text-[12px] font-black uppercase tracking-[0.25em] transition-colors duration-500 ${isDark ? 'text-slate-900' : 'text-slate-200'}`}>
+                      {s.label}
+                    </div>
+                    <div className={`text-[9px] font-bold uppercase tracking-widest opacity-40 transition-colors duration-500 ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>
+                      {s.sub}
+                    </div>
+                  </div>
+                  
+                  {/* Glowing line on hover */}
+                  <div className={`mt-6 h-1 w-0 group-hover:w-full transition-all duration-700 ${themeBg}`} />
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          {/* Bottom Bar for Stats Context */}
+          <div className={`mt-20 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-6 ${isDark ? 'border-slate-200' : 'border-white/10'}`}>
+            <div className="flex items-center gap-4">
+              <div className={`w-3 h-3 rounded-full animate-ping ${themeBg}`} />
+              <span className={`text-[10px] font-black uppercase tracking-widest ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Live Network Pulse: Operational</span>
             </div>
-          ))}
+            <div className="flex gap-8">
+               {['ISO-27001', 'SOC2 TYPE II', 'GDPR COMPLIANT'].map((tag, idx) => (
+                 <span key={idx} className={`text-[9px] font-black uppercase tracking-widest opacity-30 ${isDark ? 'text-black' : 'text-white'}`}>{tag}</span>
+               ))}
+            </div>
+          </div>
         </div>
       </section>
 
