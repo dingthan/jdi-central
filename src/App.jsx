@@ -18,34 +18,30 @@ import {
   BarChart3,
   Award,
   FileText,
-  Search
+  Search,
+  Menu,
+  X,
+  Trophy
 } from 'lucide-react';
 
 /**
- * JDI Central - Reimagined
- * A premium landing page for elite technical talent and solutions.
- * Features: 
- * - Split Hero Interaction with AI Context Switching
- * - Gemini AI Dynamic Architect (Job Descriptions vs Project Blueprints)
- * - High-Speed Interactive Marquee with Swipe & Pause
- * - Freelancer Network CTA
+ * JDI Central - Color Adaptive Edition
+ * Fully responsive landing page with dynamic theme switching and AI generation capabilities.
  */
 
-// API Configuration
-const apiKey = ""; // The execution environment provides the key at runtime
+const apiKey = ""; 
 const GEMINI_MODEL = "gemini-2.5-flash-preview-09-2025";
 
 const App = () => {
   const [scrollY, setScrollY] = useState(0);
   const [activeSide, setActiveSide] = useState('client'); 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // Marquee Swipe State
   const marqueeRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // AI Feature States
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState(null);
   const [userInput, setUserInput] = useState("");
@@ -57,9 +53,6 @@ const App = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  /**
-   * Swipe Handlers for Marquee
-   */
   const handleTouchStart = (e) => {
     setIsPaused(true);
     setStartX(e.touches[0].pageX - (marqueeRef.current?.offsetLeft || 0));
@@ -77,9 +70,6 @@ const App = () => {
     setTimeout(() => setIsPaused(false), 800);
   };
 
-  /**
-   * Gemini API call with exponential backoff logic
-   */
   const callGemini = async (prompt, systemPrompt) => {
     setAiLoading(true);
     setError(null);
@@ -97,7 +87,7 @@ const App = () => {
         });
 
         if (!response.ok) {
-          if (response.status === 429 && retries < 5) {
+          if ((response.status === 429 || response.status >= 500) && retries < 5) {
             const delay = Math.pow(2, retries) * 1000;
             await new Promise(resolve => setTimeout(resolve, delay));
             return fetchWithRetry(retries + 1);
@@ -121,7 +111,7 @@ const App = () => {
       const result = await fetchWithRetry();
       setAiResult(result);
     } catch (err) {
-      setError("The AI Engine is at capacity. Please try again in a moment.");
+      setError("The AI Engine is currently at capacity. Please try again in a moment.");
     } finally {
       setAiLoading(false);
     }
@@ -129,18 +119,14 @@ const App = () => {
 
   const handleAiConsult = () => {
     if (!userInput.trim()) return;
-    
-    // Dynamic Prompting based on activeSide
     let systemPrompt, prompt;
-    
     if (activeSide === 'client') {
-      systemPrompt = "You are an expert Technical Recruiter at JDI Central. Generate a high-impact, professional Job Description for a Top 3% candidate based on the role name provided. Include: 1. A summary that sells the vision. 2. Key responsibilities for a senior-level role. 3. Required tech stack and cultural traits.";
-      prompt = `Create an elite Job Description for: ${userInput}. Focus on attracting the world's best talent.`;
+      systemPrompt = "You are an expert Technical Recruiter at JDI Central. Generate a high-impact, professional Job Description.";
+      prompt = `Create an elite Job Description for: ${userInput}.`;
     } else {
-      systemPrompt = "You are an elite Technical Architect at JDI Central. Analyze the user's project vision and recommend: 1. A sophisticated tech stack. 2. A 'Dream Team' squad composition. 3. Estimated deployment time.";
-      prompt = `Project Vision: ${userInput}. Architect the ideal JDI squad and tech stack for this specific build.`;
+      systemPrompt = "You are an elite Technical Architect at JDI Central. Architect the ideal JDI squad.";
+      prompt = `Project Vision: ${userInput}.`;
     }
-    
     callGemini(prompt, systemPrompt);
   };
 
@@ -159,33 +145,50 @@ const App = () => {
     { role: "Marketing Experts", icon: <BarChart3 size={20} /> },
   ];
 
-  const JDILogo = () => (
+  const JDILogo = ({ side }) => (
     <div className="flex items-center gap-3 group cursor-pointer">
-      <div className="relative w-10 h-10 flex items-center justify-center">
+      <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
         <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full animate-spin-slow">
           <circle 
-            cx="50" cy="50" r="45" fill="none" 
-            stroke="currentColor" strokeWidth="2" strokeDasharray="10 15" 
-            className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} 
+            cx="50" cy="50" r="45" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeDasharray="10 15"
+            className={side === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}
+          />
+          <circle 
+            cx="50" cy="50" r="45" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="6" 
+            strokeDasharray="1 98" 
+            strokeLinecap="round"
+            className={side === 'client' ? 'text-blue-400' : 'text-[#1bd2a4]/80'}
           />
         </svg>
-        <div className={`w-6 h-6 flex items-center justify-center font-black text-[10px] italic rounded-sm transition-colors duration-500 ${activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'} text-white`}>
+        <div className={`w-6 h-6 md:w-7 md:h-7 flex items-center justify-center font-black text-[10px] md:text-xs italic rounded-sm transform transition-transform group-hover:scale-110 ${side === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'} text-white`}>
           JDI
         </div>
       </div>
-      <div className="text-lg font-black tracking-tighter uppercase italic leading-none text-white">
-        Central<span className={activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}>.</span>
+      <div className="text-lg md:text-xl font-black tracking-tighter uppercase italic leading-none">
+        Central<span className={side === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'}>.</span>
       </div>
     </div>
   );
 
+  const themeBg = activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]';
+  const themeText = activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]';
+  const themeBorder = activeSide === 'client' ? 'border-blue-500/30' : 'border-[#1bd2a4]/30';
+  const themeGlow = activeSide === 'client' ? 'shadow-[0_0_50px_-12px_rgba(59,130,246,0.5)]' : 'shadow-[0_0_50px_-12px_rgba(27,210,164,0.5)]';
+
   return (
     <div className="min-h-screen bg-[#020203] text-white font-sans selection:bg-blue-500 selection:text-white overflow-x-hidden">
-      {/* Dynamic Grid Background */}
+      {/* Background Grid */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.05]" 
            style={{ backgroundImage: 'linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
       
-      {/* Background Glow */}
+      {/* Dynamic Ambient Glow */}
       <div 
         className="fixed pointer-events-none transition-all duration-1000 ease-out z-0 opacity-40"
         style={{
@@ -200,8 +203,8 @@ const App = () => {
       />
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center border-b border-white/5 backdrop-blur-xl bg-black/20">
-        <JDILogo />
+      <nav className="fixed top-0 w-full z-50 mix-blend-difference px-6 py-6 flex justify-between items-center backdrop-blur-sm bg-black/10">
+        <JDILogo side={activeSide}/>
         <div className="hidden md:flex space-x-10 font-bold uppercase text-[10px] tracking-[0.3em]">
           <a href="#" className="hover:text-blue-400 transition-colors">Hire Talent</a>
           <a href="#" className="hover:text-blue-400 transition-colors">Solutions</a>
@@ -216,18 +219,14 @@ const App = () => {
       {/* Hero Section */}
       <section className="relative pt-32 min-h-[90vh] flex flex-col justify-center px-6 z-10">
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-6 relative">
-          {/* HIRE PRECISION CARD */}
           <div 
-            onMouseEnter={() => {
-              setActiveSide('client');
-              setAiResult(null); // Clear previous AI context when switching
-            }} 
+            onMouseEnter={() => { setActiveSide('client'); setAiResult(null); }} 
             className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'client' ? 'bg-blue-600/5 border-blue-500/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
           >
             <div className="mb-6 inline-flex items-center gap-2 px-4 py-1 rounded-full border border-blue-500/50 text-blue-400 text-[10px] font-bold tracking-widest uppercase bg-blue-500/10">
               <Star size={14} fill="currentColor" /> World-Class Talent
             </div>
-            <h1 className="text-6xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6">
+            <h1 className="text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6">
               Hire <br /><span className="text-transparent stroke-blue">Precision.</span>
             </h1>
             <p className="text-lg text-slate-400 mb-8 max-w-sm font-medium">Access individual elite software engineers and designers.</p>
@@ -236,18 +235,14 @@ const App = () => {
             </button>
           </div>
 
-          {/* BUILD THE FUTURE CARD */}
           <div 
-            onMouseEnter={() => {
-              setActiveSide('talent');
-              setAiResult(null); // Clear previous AI context when switching
-            }} 
+            onMouseEnter={() => { setActiveSide('talent'); setAiResult(null); }} 
             className={`group relative p-8 md:p-12 rounded-[2.5rem] transition-all duration-500 border-2 cursor-pointer ${activeSide === 'talent' ? 'bg-[#1bd2a4]/5 border-[#1bd2a4]/40' : 'opacity-40 border-transparent hover:opacity-60'}`}
           >
             <div className="mb-6 inline-flex items-center gap-2 px-4 py-1 rounded-full border border-[#1bd2a4]/50 text-[#1bd2a4] text-[10px] font-bold tracking-widest uppercase bg-[#1bd2a4]/10">
               <Zap size={14} fill="currentColor" /> Full Solutions
             </div>
-            <h1 className="text-6xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6">
+            <h1 className="text-5xl md:text-8xl font-black leading-[0.85] uppercase italic mb-6">
               Build <br /><span className="text-transparent stroke-green">The Future.</span>
             </h1>
             <p className="text-lg text-slate-400 mb-8 max-w-sm font-medium">Deploy a dedicated JDI squad to ship mission-critical products.</p>
@@ -258,21 +253,14 @@ const App = () => {
         </div>
       </section>
 
-      {/* High-Speed Swipe Marquee */}
-      <section 
-        className="py-24 bg-black overflow-hidden relative border-y border-white/5 group/marquee cursor-grab active:cursor-grabbing"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+      {/* Marquee Section */}
+      <section className="py-16 bg-black overflow-hidden relative border-y border-white/5 cursor-grab active:cursor-grabbing">
         <div ref={marqueeRef} className={`flex whitespace-nowrap animate-marquee-fast ${isPaused ? 'pause' : ''}`}>
-          {[...skillsets, ...skillsets, ...skillsets, ...skillsets].map((skill, idx) => (
-            <div key={idx} className="flex items-center gap-8 mx-12 transition-all duration-300 hover:scale-110 select-none">
-              <span className={`transition-colors duration-500 ${activeSide === 'client' ? 'text-blue-500' : 'text-[#1bd2a4]'} opacity-40`}>{skill.icon}</span>
-              <span className="text-5xl font-black uppercase italic tracking-tighter text-white/30 hover:text-white transition-colors duration-300">{skill.role}</span>
-              <span className={`w-2 h-2 rounded-full ${activeSide === 'client' ? 'bg-blue-600' : 'bg-[#1bd2a4]'} opacity-20 mx-4`} />
+          {[...skillsets, ...skillsets, ...skillsets].map((skill, idx) => (
+            <div key={idx} className="flex items-center gap-8 mx-12 transition-all duration-300 select-none">
+              <span className={`transition-colors duration-500 ${themeText} opacity-40`}>{skill.icon}</span>
+              <span className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter text-white/30 hover:text-white transition-colors duration-300">{skill.role}</span>
+              <span className={`w-2 h-2 rounded-full ${themeBg} opacity-20 mx-4 transition-colors duration-500`} />
             </div>
           ))}
         </div>
@@ -335,57 +323,54 @@ const App = () => {
         </div>
       </section>
 
-      {/* Global Performance Statistics */}
+
+      {/* Stats Section */}
       <section className="py-24 bg-white text-black relative z-10">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-16">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left">
           {stats.map((s, i) => (
-            <div key={i} className="group cursor-default">
-              <div className="text-6xl font-black italic mb-2 tracking-tighter">
-                {s.value}
-              </div>
-              <div className="text-xs font-black uppercase tracking-[0.3em] opacity-50">{s.label}</div>
+            <div key={i}>
+              <div className="text-4xl md:text-6xl font-black italic mb-2 tracking-tighter">{s.value}</div>
+              <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-50">{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Methodology Section */}
+      {/* Screening Section */}
       <section className="py-32 px-6 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <div>
-            <h2 className="text-4xl md:text-6xl font-black uppercase italic mb-8 leading-tight">The <span className="text-blue-500">Top 3%</span> Screening Process.</h2>
+            <h2 className="text-4xl md:text-6xl font-black uppercase italic mb-8 leading-tight">
+              The <span className={`transition-colors duration-700 ${themeText}`}>Top 3%</span> Screening Process.
+            </h2>
             <div className="space-y-6">
               {["Language & Personality Evaluation", "In-Depth Technical Deep Dive", "Live Technical Screening", "Trial-to-Hire Guarantee"].map((item, idx) => (
                 <div key={idx} className="flex items-center gap-4 text-white font-bold uppercase italic tracking-wider text-sm">
-                  <CheckCircle2 className="text-blue-500" size={20} /> {item}
+                  <CheckCircle2 className={`transition-colors duration-700 ${themeText}`} size={20} /> {item}
                 </div>
               ))}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-6">
-            {/* Card 1: Build Teams */}
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/30 transition-all">
-                <Users size={32} className="text-blue-500 mb-6" />
-                <h4 className="font-black uppercase italic mb-2">Build Teams</h4>
-                <p className="text-xs text-slate-500 uppercase tracking-tighter">Scale with pre-vetted seniors.</p>
+            <div className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 transition-all duration-700 hover:${themeBorder}`}>
+              <Users size={32} className={`mb-6 transition-colors duration-700 ${themeText}`} />
+              <h4 className="font-black uppercase italic mb-2">Build Teams</h4>
+              <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Scale with pre-vetted seniors.</p>
             </div>
-            {/* Card 2: Tech Depth */}
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/30 transition-all">
-                <Terminal size={32} className="text-blue-500 mb-6" />
-                <h4 className="font-black uppercase italic mb-2">Tech Depth</h4>
-                <p className="text-xs text-slate-500 uppercase tracking-tighter">AI, Fintech, Web Specialists.</p>
+            <div className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 transition-all duration-700 hover:${themeBorder}`}>
+              <Terminal size={32} className={`mb-6 transition-colors duration-700 ${themeText}`} />
+              <h4 className="font-black uppercase italic mb-2">Tech Depth</h4>
+              <p className="text-[10px] text-slate-500 uppercase tracking-tighter">AI, Fintech, Web Specialists.</p>
             </div>
-            {/* Card 3: Zero Risk (Added) */}
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 hover:border-blue-500/30 transition-all">
-                <ShieldCheck size={32} className="text-blue-500 mb-6" />
-                <h4 className="font-black uppercase italic mb-2">Zero Risk</h4>
-                <p className="text-xs text-slate-500 uppercase tracking-tighter leading-relaxed">Trial periods ensure the perfect match every single time.</p>
+            <div className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 transition-all duration-700 hover:${themeBorder}`}>
+              <ShieldCheck size={32} className={`mb-6 transition-colors duration-700 ${themeText}`} />
+              <h4 className="font-black uppercase italic mb-2">Zero Risk</h4>
+              <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Trial periods ensure fit.</p>
             </div>
-            {/* Card 4: Global Reach (Added) */}
-            <div className="bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 hover:border-blue-500/30 transition-all">
-                <Globe size={32} className="text-blue-500 mb-6" />
-                <h4 className="font-black uppercase italic mb-2">Global Reach</h4>
-                <p className="text-xs text-slate-500 uppercase tracking-tighter leading-relaxed">Talent across every timezone, ready to integrate now.</p>
+            <div className={`bg-[#0a0a0c] p-8 rounded-[2rem] border border-white/5 mt-12 transition-all duration-700 hover:${themeBorder}`}>
+              <Globe size={32} className={`mb-6 transition-colors duration-700 ${themeText}`} />
+              <h4 className="font-black uppercase italic mb-2">Global Reach</h4>
+              <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Borderless expertise.</p>
             </div>
           </div>
         </div>
@@ -414,7 +399,7 @@ const App = () => {
       {/* Footer */}
       <footer className="py-20 border-t border-white/5 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <JDILogo />
+          <JDILogo side={activeSide} />
           <div className="text-[10px] text-slate-600 uppercase font-bold tracking-tighter">© 2025 JDI CENTRAL. ALL RIGHTS RESERVED.</div>
         </div>
       </footer>
@@ -425,11 +410,8 @@ const App = () => {
         @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .animate-spin-slow { animation: spin-slow 15s linear infinite; }
         @keyframes marquee-fast { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee-fast { animation: marquee-fast 6s linear infinite; }
+        .animate-marquee-fast { animation: marquee-fast 15s linear infinite; }
         .pause { animation-play-state: paused !important; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
       `}} />
     </div>
   );
