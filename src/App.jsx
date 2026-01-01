@@ -627,7 +627,7 @@ const App = () => {
       </section>
 
       {/* Stats Section */}
-      <section className={`py-32 relative z-10 transition-colors duration-1000 ${isDark ? 'bg-white' : 'bg-[#0a0a0c]'}`}>
+      <section className={`py-16 relative z-10 transition-colors duration-1000 ${isDark ? 'bg-white' : 'bg-[#0a0a0c]'}`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {statsList.map((s, i) => (
@@ -817,19 +817,32 @@ const App = () => {
           <div className="max-w-sm">
             <JDILogo side={activeSide} />
             <p className="text-slate-500 mt-6 mb-8 leading-relaxed font-medium">
-              The platform bridging the gap between high-stakes tech needs and world-class freelance talent.
+              The platform bridging the gap between high-stakes tech needs and world-class freelance talent. Built for speed, scale, and strange success.
             </p>
+            <div className="flex gap-4">
+               <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse" />
+               <div className="w-3 h-3 rounded-full bg-[#1bd2a4] animate-pulse delay-75" />
+            </div>
           </div>
+          
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-[10px] uppercase font-black tracking-[0.3em]">
             <div className="flex flex-col gap-5 text-slate-500">
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Hire</span>
+              <a href="#" className="hover:text-blue-500 transition-colors">Project Audit</a>
               <a href="#" className="hover:text-blue-500 transition-colors">Squad Search</a>
               <a href="#" className="hover:text-blue-500 transition-colors">Pricing</a>
+            </div>
+            <div className="flex flex-col gap-5 text-slate-500">
+              <span className={isDark ? 'text-white' : 'text-slate-900'}>Build</span>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Talent Network</a>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Career Path</a>
+              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Remote Roles</a>
             </div>
             <div className="flex flex-col gap-5 text-slate-500">
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Connect</span>
               <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
               <a href="#" className="hover:text-white transition-colors">Twitter</a>
+              <a href="#" className="hover:text-white transition-colors">Contact</a>
             </div>
           </div>
         </div>
