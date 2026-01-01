@@ -39,11 +39,10 @@ import {
 } from 'lucide-react';
 
 /**
- * JDI Central - Corrected Version
- * Fixes: Crosshair reference error and React child object error
+ * JDI Central - Integrated Version
+ * Fixes: Structural JSX tagging mismatch in Hero section
  */
 
-const apiKey = ""; 
 const GEMINI_MODEL = "gemini-2.5-flash-preview-09-2025";
 
 const App = () => {
@@ -55,7 +54,7 @@ const App = () => {
   const marqueeRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   
-  // API Key Management for GitHub/External Hosting
+  // API Key Management
   const [apiKey, setApiKey] = useState(localStorage.getItem('jdi_gemini_key') || "");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResult, setAiResult] = useState(null);
@@ -70,12 +69,7 @@ const App = () => {
 
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
-
   const callGemini = async (prompt, systemPrompt) => {
-    if (!apiKey) {
-      setShowKeyModal(true);
-      return;
-    }
     setAiLoading(true);
     setError(null);
     setAiResult(null);
@@ -142,7 +136,6 @@ const App = () => {
     { label: 'Match Time', value: '< 48h', sub: 'Speed to Hire' },
   ];
 
-  // Store Icon components as references to avoid child object rendering errors
   const skillsets = [
     { role: "Developers", Icon: Cpu },
     { role: "Designers", Icon: Palette },
@@ -329,6 +322,7 @@ const App = () => {
           </button>
         </div>
       </nav>
+
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className={`fixed inset-0 z-[60] lg:hidden p-6 transition-all duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
@@ -385,6 +379,18 @@ const App = () => {
               START A PROJECT <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
+        </div>
+
+        {/* Strange Rotating Badge */}
+        <div className="absolute left-1/2 bottom-10 -translate-x-1/2 hidden md:block animate-spin-slow">
+           <svg viewBox="0 0 100 100" className="w-32 h-32 fill-white opacity-20">
+             <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+             <text className="text-[10px] font-bold uppercase tracking-[0.2em]">
+               <textPath xlinkHref="#circlePath">
+                 • Freelance Power • Project Mastery • Remote Elite •
+               </textPath>
+             </text>
+           </svg>
         </div>
       </section>
 
@@ -550,7 +556,6 @@ const App = () => {
                 </div>
               ))}
               
-              {/* CTA Last Card - Get a Quote (Placed OUTSIDE the project mapping) */}
               <div className={`flex-shrink-0 w-[340px] p-8 rounded-[2rem] border-2 border-dashed flex flex-col items-center justify-center text-center transition-all ${isDark ? 'border-white/10 bg-[#1bd2a4]/5' : 'border-slate-300 bg-blue-50'}`}>
                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-6 ${themeBg} text-white shadow-xl`}>
                     <Zap size={32} fill="currentColor" />
@@ -621,16 +626,14 @@ const App = () => {
         </div>
       </section>
 
-      {/* Re-Styled Stats Section */}
+      {/* Stats Section */}
       <section className={`py-32 relative z-10 transition-colors duration-1000 ${isDark ? 'bg-white' : 'bg-[#0a0a0c]'}`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {statsList.map((s, i) => (
               <div key={i} className="group relative">
-                {/* Decorative Elements */}
                 <div className={`absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 transition-all duration-500 ${isDark ? 'border-slate-200 group-hover:border-black' : 'border-slate-800 group-hover:border-white'}`} />
                 <div className={`absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 transition-all duration-500 ${isDark ? 'border-slate-200 group-hover:border-black' : 'border-slate-800 group-hover:border-white'}`} />
-                
                 <div className={`p-10 transition-all duration-500 transform group-hover:-translate-y-2 ${isDark ? 'hover:bg-slate-50' : 'hover:bg-white/5'}`}>
                   <div className={`text-6xl font-black italic mb-3 tracking-tighter transition-colors duration-500 ${isDark ? 'text-black' : 'text-white'}`}>
                     {s.value}
@@ -643,25 +646,10 @@ const App = () => {
                       {s.sub}
                     </div>
                   </div>
-                  
-                  {/* Glowing line on hover */}
                   <div className={`mt-6 h-1 w-0 group-hover:w-full transition-all duration-700 ${themeBg}`} />
                 </div>
               </div>
             ))}
-          </div>
-          
-          {/* Bottom Bar for Stats Context */}
-          <div className={`mt-20 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-6 ${isDark ? 'border-slate-200' : 'border-white/10'}`}>
-            <div className="flex items-center gap-4">
-              <div className={`w-3 h-3 rounded-full animate-ping ${themeBg}`} />
-              <span className={`text-[10px] font-black uppercase tracking-widest ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Live Network Pulse: Operational</span>
-            </div>
-            <div className="flex gap-8">
-               {['ISO-27001', 'SOC2 TYPE II', 'GDPR COMPLIANT'].map((tag, idx) => (
-                 <span key={idx} className={`text-[9px] font-black uppercase tracking-widest opacity-30 ${isDark ? 'text-black' : 'text-white'}`}>{tag}</span>
-               ))}
-            </div>
           </div>
         </div>
       </section>
@@ -698,7 +686,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION */}
+       {/* TESTIMONIALS SECTION */}
       <section className={`py-24 px-6 relative z-10 transition-colors duration-1000 ${isDark ? 'bg-[#020203]' : 'bg-white'}`}>
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-16">
@@ -822,38 +810,26 @@ const App = () => {
         </div>
       </section>
 
+
       {/* Footer */}
       <footer className={`py-20 px-6 border-t transition-colors duration-500 ${isDark ? 'bg-black border-white/5' : 'bg-white border-slate-200'}`}>
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="max-w-sm">
             <JDILogo side={activeSide} />
             <p className="text-slate-500 mt-6 mb-8 leading-relaxed font-medium">
-              The platform bridging the gap between high-stakes tech needs and world-class freelance talent. Built for speed, scale, and strange success.
+              The platform bridging the gap between high-stakes tech needs and world-class freelance talent.
             </p>
-            <div className="flex gap-4">
-               <div className="w-3 h-3 rounded-full bg-blue-500 animate-pulse" />
-               <div className="w-3 h-3 rounded-full bg-[#1bd2a4] animate-pulse delay-75" />
-            </div>
           </div>
-          
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-[10px] uppercase font-black tracking-[0.3em]">
             <div className="flex flex-col gap-5 text-slate-500">
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Hire</span>
-              <a href="#" className="hover:text-blue-500 transition-colors">Project Audit</a>
               <a href="#" className="hover:text-blue-500 transition-colors">Squad Search</a>
               <a href="#" className="hover:text-blue-500 transition-colors">Pricing</a>
-            </div>
-            <div className="flex flex-col gap-5 text-slate-500">
-              <span className={isDark ? 'text-white' : 'text-slate-900'}>Build</span>
-              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Talent Network</a>
-              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Career Path</a>
-              <a href="#" className="hover:text-[#1bd2a4] transition-colors">Remote Roles</a>
             </div>
             <div className="flex flex-col gap-5 text-slate-500">
               <span className={isDark ? 'text-white' : 'text-slate-900'}>Connect</span>
               <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
               <a href="#" className="hover:text-white transition-colors">Twitter</a>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
             </div>
           </div>
         </div>
