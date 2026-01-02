@@ -38,6 +38,7 @@ import {
   Target
 } from 'lucide-react';
 
+import HireTalents from './pages/HireTalents';
 /**
  * JDI Central - Integrated Version
  * Fixes: Structural JSX tagging mismatch in Hero section
