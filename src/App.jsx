@@ -278,8 +278,90 @@ const App = () => {
   );
 
   return (
+    
     <div className={`min-h-screen transition-colors duration-500 font-sans selection:bg-blue-500 selection:text-white overflow-x-hidden ${isDark ? 'bg-[#020203] text-white' : 'bg-slate-50 text-slate-900'}`}>
-      
+            {/* WIZARD OVERLAY (Modal) */}
+      {wizardMode && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-300" onClick={closeWizard} />
+          
+          <div className={`relative w-full max-w-4xl h-[85vh] sm:h-auto max-h-[90vh] rounded-[2.5rem] overflow-hidden border shadow-2xl animate-in zoom-in duration-300 flex flex-col ${isDark ? 'bg-[#0a0a0c] border-white/10' : 'bg-white border-slate-200'}`}>
+            
+            {/* Header */}
+            <div className="flex items-center justify-between p-8 border-b border-white/5">
+              <div className="flex items-center gap-4">
+                <button onClick={closeWizard} className="p-2 hover:bg-white/5 rounded-full transition-colors opacity-60 hover:opacity-100">
+                  <X size={24} />
+                </button>
+                <div className="w-[1px] h-6 bg-white/10" />
+                <div className="flex items-center gap-2">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className={`h-1 w-6 rounded-full ${wizardStep >= i ? (wizardMode === 'talent' ? 'bg-[#1bd2a4]' : 'bg-blue-600') : 'bg-white/10'}`} />
+                  ))}
+                </div>
+              </div>
+              <span className={`text-[10px] font-black uppercase tracking-widest ${wizardMode === 'talent' ? 'text-[#1bd2a4]' : 'text-blue-600'}`}>Step 0{wizardStep}</span>
+            </div>
+
+            {/* Content Area */}
+            <div className="flex-1 overflow-y-auto p-8 sm:p-12">
+              {wizardStep === 1 && (
+                <div className="animate-in slide-in-from-bottom-4">
+                  <h2 className="text-4xl sm:text-5xl font-black uppercase italic tracking-tighter mb-4">
+                    {wizardMode === 'talent' ? 'Hire' : 'Start'} <span className={wizardMode === 'talent' ? 'text-[#1bd2a4]' : 'text-blue-600'}>Precision.</span>
+                  </h2>
+                  <p className="opacity-60 mb-12 max-w-lg">Let's define your requirements to find the perfect technical match.</p>
+                  
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {['Engineering', 'Design', 'Product', 'Growth'].map((cat) => (
+                      <button 
+                        key={cat}
+                        onClick={() => setWizardStep(2)}
+                        className={`p-6 rounded-2xl border text-left transition-all hover:scale-[1.02] ${isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'} hover:${wizardMode === 'talent' ? 'border-[#1bd2a4]' : 'border-blue-600'}`}
+                      >
+                        <h4 className="font-black uppercase italic text-lg">{cat}</h4>
+                        <p className="text-xs opacity-50">Top 3% Vetted Experts</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {wizardStep === 2 && (
+                <div className="animate-in slide-in-from-bottom-4">
+                  <h2 className="text-4xl sm:text-5xl font-black uppercase italic tracking-tighter mb-8">Technical <span className={wizardMode === 'talent' ? 'text-[#1bd2a4]' : 'text-blue-600'}>Specs.</span></h2>
+                  <div className="space-y-6">
+                    <div>
+                      <label className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-2 block">Define Role / Project Title</label>
+                      <input 
+                        autoFocus
+                        type="text" 
+                        placeholder="e.g. Senior Smart Contract Engineer" 
+                        className={`w-full bg-transparent border-b-2 py-4 text-2xl font-bold outline-none focus:${wizardMode === 'talent' ? 'border-[#1bd2a4]' : 'border-blue-600'} border-white/10 transition-colors`}
+                      />
+                    </div>
+                    <div className="flex gap-4 pt-8">
+                      <button onClick={() => setWizardStep(1)} className="px-8 py-4 border rounded-xl font-bold uppercase tracking-widest text-[10px]">Back</button>
+                      <button onClick={() => setWizardStep(3)} className={`flex-1 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] text-white ${wizardMode === 'talent' ? 'bg-[#1bd2a4]' : 'bg-blue-600'}`}>Initialize Request</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {wizardStep === 3 && (
+                <div className="text-center py-12 animate-in zoom-in">
+                  <div className={`w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-8 ${wizardMode === 'talent' ? 'bg-[#1bd2a4]/10 text-[#1bd2a4]' : 'bg-blue-600/10 text-blue-600'}`}>
+                    <CheckCircle2 size={48} />
+                  </div>
+                  <h2 className="text-5xl font-black uppercase italic tracking-tighter mb-4">Success.</h2>
+                  <p className="opacity-60 mb-12">Our concierge team is reviewing your specs. <br/>Expect a response within 120 minutes.</p>
+                  <button onClick={closeWizard} className={`px-12 py-4 rounded-sm font-black uppercase tracking-widest text-[10px] text-white ${wizardMode === 'talent' ? 'bg-[#1bd2a4]' : 'bg-blue-600'}`}>Done</button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       {/* Background Grid */}
       <div className={`fixed inset-0 pointer-events-none z-0 ${isDark ? 'opacity-[0.05]' : 'opacity-[0.08]'}`} 
            style={{ backgroundImage: `linear-gradient(${themeMain} 1px, transparent 1px), linear-gradient(90deg, ${themeMain} 1px, transparent 1px)`, backgroundSize: '60px 60px' }} />
@@ -388,89 +470,7 @@ const App = () => {
             </button>
           </div>
         </div>
-        
-      {/* WIZARD OVERLAY (Modal) */}
-      {wizardMode && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-300" onClick={closeWizard} />
-          
-          <div className={`relative w-full max-w-4xl h-[85vh] sm:h-auto max-h-[90vh] rounded-[2.5rem] overflow-hidden border shadow-2xl animate-in zoom-in duration-300 flex flex-col ${isDark ? 'bg-[#0a0a0c] border-white/10' : 'bg-white border-slate-200'}`}>
-            
-            {/* Header */}
-            <div className="flex items-center justify-between p-8 border-b border-white/5">
-              <div className="flex items-center gap-4">
-                <button onClick={closeWizard} className="p-2 hover:bg-white/5 rounded-full transition-colors opacity-60 hover:opacity-100">
-                  <X size={24} />
-                </button>
-                <div className="w-[1px] h-6 bg-white/10" />
-                <div className="flex items-center gap-2">
-                  {[1, 2, 3].map(i => (
-                    <div key={i} className={`h-1 w-6 rounded-full ${wizardStep >= i ? (wizardMode === 'talent' ? 'bg-[#1bd2a4]' : 'bg-blue-600') : 'bg-white/10'}`} />
-                  ))}
-                </div>
-              </div>
-              <span className={`text-[10px] font-black uppercase tracking-widest ${wizardMode === 'talent' ? 'text-[#1bd2a4]' : 'text-blue-600'}`}>Step 0{wizardStep}</span>
-            </div>
 
-            {/* Content Area */}
-            <div className="flex-1 overflow-y-auto p-8 sm:p-12">
-              {wizardStep === 1 && (
-                <div className="animate-in slide-in-from-bottom-4">
-                  <h2 className="text-4xl sm:text-5xl font-black uppercase italic tracking-tighter mb-4">
-                    {wizardMode === 'talent' ? 'Hire' : 'Start'} <span className={wizardMode === 'talent' ? 'text-[#1bd2a4]' : 'text-blue-600'}>Precision.</span>
-                  </h2>
-                  <p className="opacity-60 mb-12 max-w-lg">Let's define your requirements to find the perfect technical match.</p>
-                  
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {['Engineering', 'Design', 'Product', 'Growth'].map((cat) => (
-                      <button 
-                        key={cat}
-                        onClick={() => setWizardStep(2)}
-                        className={`p-6 rounded-2xl border text-left transition-all hover:scale-[1.02] ${isDark ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'} hover:${wizardMode === 'talent' ? 'border-[#1bd2a4]' : 'border-blue-600'}`}
-                      >
-                        <h4 className="font-black uppercase italic text-lg">{cat}</h4>
-                        <p className="text-xs opacity-50">Top 3% Vetted Experts</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {wizardStep === 2 && (
-                <div className="animate-in slide-in-from-bottom-4">
-                  <h2 className="text-4xl sm:text-5xl font-black uppercase italic tracking-tighter mb-8">Technical <span className={wizardMode === 'talent' ? 'text-[#1bd2a4]' : 'text-blue-600'}>Specs.</span></h2>
-                  <div className="space-y-6">
-                    <div>
-                      <label className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-2 block">Define Role / Project Title</label>
-                      <input 
-                        autoFocus
-                        type="text" 
-                        placeholder="e.g. Senior Smart Contract Engineer" 
-                        className={`w-full bg-transparent border-b-2 py-4 text-2xl font-bold outline-none focus:${wizardMode === 'talent' ? 'border-[#1bd2a4]' : 'border-blue-600'} border-white/10 transition-colors`}
-                      />
-                    </div>
-                    <div className="flex gap-4 pt-8">
-                      <button onClick={() => setWizardStep(1)} className="px-8 py-4 border rounded-xl font-bold uppercase tracking-widest text-[10px]">Back</button>
-                      <button onClick={() => setWizardStep(3)} className={`flex-1 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] text-white ${wizardMode === 'talent' ? 'bg-[#1bd2a4]' : 'bg-blue-600'}`}>Initialize Request</button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {wizardStep === 3 && (
-                <div className="text-center py-12 animate-in zoom-in">
-                  <div className={`w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-8 ${wizardMode === 'talent' ? 'bg-[#1bd2a4]/10 text-[#1bd2a4]' : 'bg-blue-600/10 text-blue-600'}`}>
-                    <CheckCircle2 size={48} />
-                  </div>
-                  <h2 className="text-5xl font-black uppercase italic tracking-tighter mb-4">Success.</h2>
-                  <p className="opacity-60 mb-12">Our concierge team is reviewing your specs. <br/>Expect a response within 120 minutes.</p>
-                  <button onClick={closeWizard} className={`px-12 py-4 rounded-sm font-black uppercase tracking-widest text-[10px] text-white ${wizardMode === 'talent' ? 'bg-[#1bd2a4]' : 'bg-blue-600'}`}>Done</button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
         {/* Strange Rotating Badge */}
         <div className="absolute left-1/2 bottom-10 -translate-x-1/2 hidden md:block animate-spin-slow">
            <svg viewBox="0 0 100 100" className="w-32 h-32 fill-white opacity-20">
