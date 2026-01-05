@@ -388,9 +388,10 @@ const App = () => {
             </button>
           </div>
         </div>
+        
       {/* WIZARD OVERLAY (Modal) */}
       {wizardMode && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-300" onClick={closeWizard} />
           
           <div className={`relative w-full max-w-4xl h-[85vh] sm:h-auto max-h-[90vh] rounded-[2.5rem] overflow-hidden border shadow-2xl animate-in zoom-in duration-300 flex flex-col ${isDark ? 'bg-[#0a0a0c] border-white/10' : 'bg-white border-slate-200'}`}>
